@@ -18,7 +18,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 
 
-public class GameMapView extends AppCompatActivity implements GameService.GameServiceListener {
+public class GameMapView extends AppCompatActivity implements GameServiceListener {
     protected GameService gameService;
     protected boolean gameServiceBound;
 

@@ -51,11 +51,6 @@ public class GameService extends Service {
         listeners.remove(listener);
     }
 
-    public interface GameServiceListener {
-
-        void updatePlayerPosition(Location location);
-    }
-
 
     // ===== Event Handling =====
     private void initLocationServices() throws SecurityException {
