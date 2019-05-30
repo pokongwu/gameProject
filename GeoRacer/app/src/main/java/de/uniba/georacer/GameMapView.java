@@ -19,8 +19,6 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.osmdroid.config.Configuration;
-
 import de.uniba.ioannidis.christos.georacer.R;
 
 
@@ -56,10 +54,6 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Context ctx = getApplicationContext();
-        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-
         setContentView(R.layout.game_map_view);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
