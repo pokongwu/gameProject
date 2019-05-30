@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.lab1.ioannidis.christos.myapplication">
+    package="de.uniba.ioannidis.christos.georacer">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,13 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameMapView">
+        <activity android:name="de.uniba.georacer.GameMapView">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainMenu"
+            android:name="de.uniba.georacer.MainMenu"
             android:label="@string/title_activity_main_menu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -33,9 +33,9 @@
         </activity>
 
         <service
-            android:name=".GameService"
+            android:name="de.uniba.georacer.GameService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
     </application>
 
 </manifest>
