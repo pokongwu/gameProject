@@ -3,4 +3,5 @@
     <string name="title_activity_main_menu">GeoRacer</string>
     <string name="button">Start Game</string>
     <string name="backButton">Menu</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
