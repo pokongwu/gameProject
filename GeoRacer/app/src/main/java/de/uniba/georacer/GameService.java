@@ -9,11 +9,18 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
+
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameService extends Service {
+import de.uniba.georacer.service.route.RouteService;
+import de.uniba.georacer.service.route.RouteURLs;
+
+public class GameService extends Service implements OnRouteServiceFinished {
+    private GameState gameState;
     private final IBinder binder = new LocalBinder();
     private final List<GameServiceListener> listeners = new ArrayList<GameServiceListener>();
 
@@ -29,6 +36,7 @@ public class GameService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        gameState = new GameState();
         initLocationServices();
         return binder;
     }
@@ -58,9 +66,22 @@ public class GameService extends Service {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                System.out.println("on location changed..");
+
+                // TODO init on another place or should user define the start location?
+                if(gameState.getStart() == null) {
+                    gameState.setStart(location);
+                }
+
+
                 // Alert Listeners about changed player position
                 for (GameServiceListener listener : listeners) {
                     listener.updatePlayerPosition(location);
+                    if(gameState.getDestination() == null) {
+                        listener.showToast("Tap on the map in order to set the destination");
+                    } else {
+                        listener.showToast("Current destination is " + gameState.getDestination().getLatitude() + ", " + gameState.getDestination().getLongitude());
+                    }
                 }
             }
 
@@ -95,4 +116,22 @@ public class GameService extends Service {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
     }
 
+    public void startRoutingToDestination(Location destination) {
+        gameState.setDestination(destination);
+
+        if(gameState.getStart() != null) {
+            RouteService routeService = new RouteService(this);
+            String directionsUrl = RouteURLs.getDirectionsUrl(gameState.getStart(), gameState.getDestination(), getApplicationContext());
+            routeService.execute(directionsUrl);
+        } else {
+            Log.w("##", "no start position available");
+        }
+    }
+
+    @Override
+    public void onRouteServiceFinished(PolylineOptions route) {
+        for(GameServiceListener listener : listeners) {
+            listener.drawRoute(route);
+        }
+    }
 }

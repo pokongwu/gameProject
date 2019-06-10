@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import de.uniba.ioannidis.christos.georacer.R;
 
@@ -25,6 +27,8 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     protected GameService gameService;
     protected boolean gameServiceBound;
     private GoogleMap mMap;
+    private MarkerOptions currentPosMarker;
+    private MarkerOptions destinationPosMarker;
     // ===== Game Service Connection =====
 
     private ServiceConnection gameServiceCon = new ServiceConnection() {
@@ -48,6 +52,34 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(),
                         location.getLongitude()), 15f));
+
+        //TODO write util class for converting Location <-> LatLng
+        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        currentPosMarker = new MarkerOptions().position(currentPosition).title("You are here");
+        mMap.addMarker(currentPosMarker);
+    }
+
+    @Override
+    public void showToast(String message) {
+        View view = getWindow().getDecorView().findViewById(android.R.id.content);
+        Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_green_dark))
+                .show();
+
+    }
+
+    @Override
+    public void drawRoute(PolylineOptions route) {
+        mMap.clear();
+        mMap.addPolyline(route);
+        mMap.addMarker(currentPosMarker);
+        mMap.addMarker(destinationPosMarker);
     }
 
     @Override
@@ -94,6 +126,21 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
+
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Location destination = new Location("map tap");
+                destination.setLatitude(latLng.latitude);
+                destination.setLongitude(latLng.longitude);
+
+                destinationPosMarker = new MarkerOptions().position(latLng).title("Your destination");
+                mMap.addMarker(destinationPosMarker);
+
+                gameService.startRoutingToDestination(destination);
+            }
+        });
     }
 
 

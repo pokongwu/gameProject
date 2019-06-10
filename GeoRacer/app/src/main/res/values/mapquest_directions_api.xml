@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mapquest_api_base_uri">http://open.mapquestapi.com/directions/v2/route?</string>
+    <string name="mapquest_api_key">EnzwWoQe52u2ylAObmEjdFAxJepIYV9j</string>
+</resources>
