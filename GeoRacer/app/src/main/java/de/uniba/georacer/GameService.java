@@ -121,8 +121,8 @@ public class GameService extends Service implements OnRouteServiceFinished {
 
         if(gameState.getStart() != null) {
             RouteService routeService = new RouteService(this);
-            String directionsUrl = RouteURLs.getDirectionsUrl(gameState.getStart(), gameState.getDestination(), getApplicationContext());
-            routeService.execute(directionsUrl);
+            String routeUrl = RouteURLs.getRouteUrl(gameState.getStart(), gameState.getDestination(), getApplicationContext());
+            routeService.execute(routeUrl);
         } else {
             Log.w("##", "no start position available");
         }

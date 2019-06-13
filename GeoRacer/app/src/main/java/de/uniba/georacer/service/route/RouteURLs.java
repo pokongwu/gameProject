@@ -10,31 +10,20 @@ import android.location.Location;
 import de.uniba.ioannidis.christos.georacer.R;
 
 public class RouteURLs {
-    public static String getDirectionsUrl(Location start, Location destination, Context context) {
-        StringBuilder directionsUrl = new StringBuilder();
+    public static String getRouteUrl(Location start, Location destination, Context context) {
+        String fullShape = "true";
+        String directionsUrl = context.getString(R.string.mapquest_api_route_uri) +
+                "key=%s&from=%s,%s&to=%s,%s&routeType=%s&fullShape=%s";
+        String uri = String.format(directionsUrl,
+                context.getString(R.string.mapquest_api_key),
+                start.getLatitude(),
+                start.getLongitude(),
+                destination.getLatitude(),
+                destination.getLongitude(),
+                "pedestrian",
+                fullShape);
 
-        directionsUrl.append(context.getString(R.string.mapquest_api_base_uri));
-        directionsUrl.append("key=")
-                .append(context.getString(R.string.mapquest_api_key));
-
-        directionsUrl.append("&");
-
-        directionsUrl.append("from=")
-                .append(start.getLatitude())
-                .append(",")
-                .append(start.getLongitude());
-
-        directionsUrl.append("&");
-
-        directionsUrl.append("to=")
-                .append(destination.getLatitude())
-                .append(",")
-                .append(destination.getLongitude());
-
-        directionsUrl.append("&");
-
-        directionsUrl.append("routeType=" + "pedestrian");
-
-        return directionsUrl.toString();
+        System.out.println(uri);
+        return uri;
     }
 }

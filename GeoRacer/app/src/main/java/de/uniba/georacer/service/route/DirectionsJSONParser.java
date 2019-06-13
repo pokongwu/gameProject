@@ -27,27 +27,20 @@ public class DirectionsJSONParser {
 
         try {
             JSONObject jRoute = jObject.getJSONObject("route");
-            JSONArray jLegs = jRoute.getJSONArray("legs");
+            JSONObject jShape = jRoute.getJSONObject("shape");
             List<HashMap<String, String>> path = new ArrayList<>();
 
-            /** Traversing all legs */
-            for (int j = 0; j < jLegs.length(); j++) {
-                JSONArray jManeuvers = ((JSONObject) jLegs.get(j)).getJSONArray("maneuvers");
+            JSONArray jShapePoints = jShape.getJSONArray("shapePoints");
 
-                /** Traversing all steps */
-                for (int k = 0; k < jManeuvers.length(); k++) {
-                    HashMap<String, String> latlong = new HashMap<>();
-                    JSONObject maneuver = jManeuvers.getJSONObject(k);
-                    JSONObject startPoint = maneuver.getJSONObject("startPoint");
-                    latlong.put("lat", String.valueOf(startPoint.get("lat")));
-                    latlong.put("lng", String.valueOf(startPoint.get("lng")));
+            for(int j = 0; j < jShapePoints.length(); j = j + 2) {
+                HashMap<String, String> latlong = new HashMap<>();
+                latlong.put("lat", String.valueOf(jShapePoints.get(j)));
+                latlong.put("lng", String.valueOf(jShapePoints.get(j+1)));
 
-                    path.add(latlong);
-                }
+                path.add(latlong);
             }
+
             routes.add(path);
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (Exception e) {
