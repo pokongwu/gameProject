@@ -98,10 +98,17 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         bindService(serviceIntent, gameServiceCon, Context.BIND_AUTO_CREATE);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (gameServiceCon != null) {
+            unbindService(gameServiceCon);
+        }
+    }
 
     public void backToMenu(View view) {
-        Intent intent = new Intent(this, MainMenu.class);
-        startActivity(intent);
+        this.finish();
     }
 
 
