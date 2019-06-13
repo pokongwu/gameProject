@@ -31,6 +31,9 @@ public class RouteURLs {
                 .append(",")
                 .append(destination.getLongitude());
 
+        directionsUrl.append("&");
+
+        directionsUrl.append("routeType=" + "pedestrian");
 
         return directionsUrl.toString();
     }
