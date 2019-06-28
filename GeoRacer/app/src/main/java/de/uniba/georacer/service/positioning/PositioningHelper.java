@@ -23,7 +23,29 @@ public class PositioningHelper {
         return resultLocation;
     }
 
-    private double[][] calculateDesignMatrix(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+    public double[][] calculateDesignMatrix(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+        // Derivative for x:  x - x^i / sqrt((x^i - x)^2 + (y^i - y)^2)
+        // 2-Dimensional (x and y values)
+        double[][] designMatrix = new double[2][guesses.keySet().size()];
+        int i = 0;
+        for (GeoLocation location : guesses.keySet()) {
+            double xDenominator = startingPosition.getLatitude() - location.getLatitude();
+            double xDivisor = Math.sqrt(Math.pow(location.getLatitude() - startingPosition.getLatitude(), 2) + Math.pow(location.getLongitude() - startingPosition.getLongitude(), 2));
+
+            double yDenominator = startingPosition.getLongitude() - location.getLongitude();
+            double yDivisor = Math.sqrt(Math.pow(location.getLatitude() - startingPosition.getLatitude(), 2) + Math.pow(location.getLongitude() - startingPosition.getLongitude(), 2));
+
+            designMatrix[0][i] = (xDenominator / xDivisor);
+            designMatrix[1][i] = yDenominator / yDivisor;
+
+            // increment counter
+            i += 1;
+        }
+
+        return designMatrix;
+    }
+
+    private double[][] calculateDesignMatrixWithOffset(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
         // Derivative for x:  x - x^i / sqrt((x^i - x)^2 + (y^i - y)^2)
         // 2-Dimensional (x and y values)
         double[][] designMatrix = new double[2][guesses.keySet().size()];
@@ -37,7 +59,7 @@ public class PositioningHelper {
             double yDivisor = Math.sqrt(Math.pow(location.getLatitudeOffset() - startingPosition.getLatitudeOffset(), 2) + Math.pow(location.getLongitudeOffset() - startingPosition.getLongitudeOffset(), 2));
 
             designMatrix[i][0] = xDenominator / xDivisor;
-            designMatrix[i][1] = yDenominator / yDenominator;
+            designMatrix[i][1] = yDenominator / yDivisor;
 
             // increment counter
             i += 1;
@@ -45,6 +67,7 @@ public class PositioningHelper {
 
         return designMatrix;
     }
+
 
     /**
      * Use longitude-offset as x, and latitude-offset as y.

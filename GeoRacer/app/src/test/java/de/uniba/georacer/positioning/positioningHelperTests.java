@@ -11,7 +11,6 @@ import java.util.Map;
 import de.uniba.georacer.model.GeoLocation;
 import de.uniba.georacer.service.positioning.PositioningHelper;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,11 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class positioningHelperTests {
     Map<GeoLocation, Double> guesses = new HashMap<>();
     GeoLocation startingPosition = new GeoLocation(0, 0);
-
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
+    PositioningHelper helper = new PositioningHelper();
 
     @Before
     public void init() {
@@ -41,6 +36,7 @@ public class positioningHelperTests {
         guesses.put(l4, 70.0);
     }
 
+    //TODO: Ordering varies, since map is used internally
     @Test
     public void residualVectorTest() {
         // Given see init method
@@ -54,10 +50,25 @@ public class positioningHelperTests {
         realResiduals.add(-14.7);
         realResiduals.add(-51.7);
 
-
         for (int i = 0; i < residuals.size(); i++) {
-            assertEquals(residuals.get(0), realResiduals.get(0), 0.1);
+            assertEquals(realResiduals.get(i), residuals.get(i), 0.1);
         }
+
+    }
+
+    @Test
+    public void testDesignMatrix() {
+        //Given see init
+        //When
+        double[][] actual = helper.calculateDesignMatrix(guesses, startingPosition);
+        //Then
+        double[][] result = {{-0.89, -0.29, 0.89, 0.16}, {0.45, -0.96, 0.45, -0.99}};
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                assertEquals(result[i][j], actual[i][j], 0.2);
+            }
+        }
+
     }
 
 }
