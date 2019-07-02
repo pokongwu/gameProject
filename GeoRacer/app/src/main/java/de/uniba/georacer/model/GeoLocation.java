@@ -1,10 +1,10 @@
 package de.uniba.georacer.model;
 
-public class GeoLocation {
+public class GeoLocation implements Comparable<GeoLocation> {
 
     private double longitude;
     private double latitude;
-    private static final int offsetAfterDecimalPoint = 3;
+
 
     public GeoLocation(double longitude, double latitude) {
         this.longitude = longitude;
@@ -28,23 +28,51 @@ public class GeoLocation {
         this.longitude = longitude;
     }
 
-    public int getLongitudeOffset() {
-        return getOffset(longitude);
+    public int getLongitudeOffset(int offsetAfterDecimalPoint) {
+        return getOffset(longitude, offsetAfterDecimalPoint);
     }
 
-    public int getLatitudeOffset() {
-        return getOffset(latitude);
+    public int getLatitudeOffset(int offsetAfterDecimalPoint) {
+        return getOffset(latitude, offsetAfterDecimalPoint);
     }
 
-    public int getOffset(double value) {
+    public double getLongitudeBase(int offsetAfterDecimalPoint) {
+        return getBase(longitude, offsetAfterDecimalPoint);
+    }
+
+    public double getLatitudeBase(int offsetAfterDecimalPoint) {
+        return getBase(latitude, offsetAfterDecimalPoint);
+    }
+
+    private double getBase(double value, int offsetAfterDecimalPoint) {
+
+        String valueString = String.valueOf(value);
+        String[] values = String.valueOf(value).split("\\.");
+        int index = +values[0].length() + 1 + offsetAfterDecimalPoint; // ad everything before and +1 for the decimal point
+        if (index >= valueString.length()) {
+            throw new IllegalArgumentException("Offset of " + offsetAfterDecimalPoint + " is too big for value " + value);
+        }
+        double base = Double.parseDouble(valueString.substring(0, index));
+        return base;
+
+    }
+
+
+    public int getOffset(double value, int offsetAfterDecimalPoint) {
         String[] values = String.valueOf(value).split("\\.");
         if (values[1].length() < offsetAfterDecimalPoint) {
             //TODO: not enough decimals points
             return Integer.parseInt(values[1]);
         }
-        values[1] = values[1].substring(offsetAfterDecimalPoint);
+        values[1] = values[1].substring(offsetAfterDecimalPoint - 1);
         int decimals = Integer.parseInt(values[1]);
         return decimals;
+    }
+
+    @Override
+    public int compareTo(GeoLocation location) {
+        // We need some order to be able to test reliably
+        return (int) (this.longitude - location.getLongitude());
     }
 
 
