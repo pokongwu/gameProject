@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.georacer.parsing.LandmarkParser;
 import de.uniba.georacer.service.route.RouteService;
 import de.uniba.georacer.service.route.RouteURLs;
 
@@ -37,6 +38,7 @@ public class GameService extends Service implements OnRouteServiceFinished {
     @Override
     public IBinder onBind(Intent intent) {
         gameState = new GameState();
+        new LandmarkParser().parseLandmarks();
         initLocationServices();
         return binder;
     }
