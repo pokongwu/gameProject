@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,9 +18,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.List;
+
+import de.uniba.georacer.dialogs.GuessDistanceDialog;
 import de.uniba.ioannidis.christos.georacer.R;
 
 
@@ -27,6 +32,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     protected GameService gameService;
     protected boolean gameServiceBound;
     private GoogleMap mMap;
+    private Snackbar snackbar;
     private MarkerOptions currentPosMarker;
     private MarkerOptions destinationPosMarker;
     // ===== Game Service Connection =====
@@ -61,9 +67,13 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
 
     @Override
     public void showToast(String message) {
+        if(snackbar != null) {
+            snackbar.dismiss();
+        }
+
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
-        Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("OK", new View.OnClickListener() {
+        snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -80,6 +90,15 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         mMap.addPolyline(route);
         mMap.addMarker(currentPosMarker);
         mMap.addMarker(destinationPosMarker);
+
+        gameService.retrieveRandomLandmarks();
+    }
+
+    @Override
+    public void drawLandmarks(List<MarkerOptions> markers) {
+        for(MarkerOptions marker : markers) {
+            mMap.addMarker(marker);
+        }
     }
 
     @Override
@@ -146,6 +165,16 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
                 mMap.addMarker(destinationPosMarker);
 
                 gameService.startRoutingToDestination(destination);
+            }
+        });
+
+        final Context context = this;
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d("#", "onMarkerClick: " + marker.getTitle());
+                new GuessDistanceDialog().showDialog(context, marker, gameService);
+                return false;
             }
         });
     }

@@ -23,7 +23,6 @@ public class RouteURLs {
                 "pedestrian",
                 fullShape);
 
-        System.out.println(uri);
         return uri;
     }
 }
