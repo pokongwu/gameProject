@@ -38,7 +38,7 @@ public class GameService extends Service implements OnRouteServiceFinished {
     @Override
     public IBinder onBind(Intent intent) {
         gameState = new GameState();
-        new LandmarkParser().parseLandmarks();
+        new LandmarkParser().parseLandmarks(getApplicationContext());
         initLocationServices();
         return binder;
     }

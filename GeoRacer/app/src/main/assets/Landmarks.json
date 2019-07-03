@@ -1,0 +1,254 @@
+[
+	{
+		"name": "altes Rathaus",
+		"position":{
+			"latitude":49.8916433,
+			"longitude":10.8845945
+		}
+	},
+	{
+		"name": "bamberger Dom",
+		"position":{
+			"latitude":49.890778,
+			"longitude":10.8803263
+		}
+	},
+	{	"name":	"Altenberg Castle",
+		"position":{
+			"latitude":49.8806604,
+			"longitude":10.8670233
+		
+		}
+	},
+	{
+		"name":	"Alte Hofhaltung",
+		"position":{
+			"latitude":49.891171,
+			"longitude":10.8792314
+		
+		}
+	},
+	{
+		"name": "neue Residenz",
+		"position":{
+			"latitude":49.891171,
+			"longitude":10.8792314
+			
+		}
+	},
+	{
+		"name":	"Michael monastery",
+		"position":{
+			"latitude":49.8937065,
+			"longitude":10.874759
+			
+		}
+	},
+	{
+		"name": "Franconian brewery museum",
+		"position":{
+			"latitude":49.891171,
+			"longitude":10.8792314
+			
+		}
+	},
+	{
+		"name": "Karmelitenkloster",
+		"position":{
+			"latitude":49.8884534,
+			"longitude":10.8793313
+		
+		}
+	},
+	{
+		"name":	"Naturkunde-museum",
+		"position":{
+			"latitude":49.8944869,
+			"longitude":10.8857823
+		
+		}
+	},
+	{
+		"name":	"Sammlung Ludwig",
+		"position":{
+			"latitude":49.891581,
+			"longitude":10.8847483
+			
+		}
+	},
+	{
+		"name":	"Rosengarten",
+		"position":{
+			"latitude":49.891581,
+			"longitude":10.8847483
+			
+		}
+	},
+	{
+		"name":	"Schleuse 100 Ludwig-main-donau-kanal",
+		"position":{
+			"latitude":49.8879812,
+			"longitude":10.8879873
+			
+		}
+	},
+	{
+		"name":	"St.Jakob",
+		"position":{
+			"latitude":49.890921,
+			"longitude":10.8746798
+			
+		}
+	},
+	{
+		"name":	"Erlebnisführung Bamberg",
+		"position":{
+			"latitude":49.8903724,
+			"longitude":10.8864853
+			
+		}
+	},
+	{
+		"name":	"Gärtner- und Häckermuseum",
+		"position":{
+			"latitude":49.8994441,
+			"longitude":10.8906222
+			
+		}
+	},
+	{
+		"name":	"Igor Mitoraj",
+		"position":{
+			"latitude":49.8920625,
+			"longitude":10.8849923
+			
+		}
+	},
+	{
+		"name":	"Otto-Friedrich-Universität",
+		"position":{
+			"latitude":49.8938379,
+			"longitude":10.8839493
+			
+		}
+	},
+	{
+		"name":	"Palace Casino",
+		"position":{
+			"latitude":49.9003434,
+			"longitude":10.9171214
+			
+		}
+	},
+	{
+		"name":	"Volkspark",
+		"position":{
+			"latitude":49.9018114,
+			"longitude":10.9255342
+			
+		}
+	},
+	{
+		"name":	"Rosengarten",
+		"position":{
+			"latitude":49.892122,
+			"longitude":10.8790719
+			
+		}
+	},
+	{
+		"name":	"Alfred Seel Bäckerei",
+		"position":{
+			"latitude":49.8905484,
+			"longitude":10.8830872
+			
+		}
+	},
+	{
+		"name":	"Hotel Weierich",
+		"position":{
+			"latitude":49.8905819,
+			"longitude":10.8832991
+			
+		}
+	},
+	{
+		"name":	"Galerie am Stephansberg",
+		"position":{
+			"latitude":49.8887828,
+			"longitude":10.8846862
+			
+		}
+	},
+	{
+		"name":	"Hofbräu",
+		"position":{
+			"latitude":49.8910716,
+			"longitude":10.8838151
+			
+		}
+	},
+	{
+		"name":	"FruchtBar",
+		"position":{
+			"latitude":49.8920906,
+			"longitude":10.8811779
+			
+		}
+	},
+	{
+		"name":	"Michaelsberger Garten, Benediktinerweg",
+		"position":{
+			"latitude":49.8942324,
+			"longitude":10.8764958
+			
+		}
+	},
+	{
+		"name":	"Bamberger Faltboot-Club",
+		"position":{
+			"longitude":49.9033159,
+			"latitude":10.8720365
+			
+		}
+	},
+	{
+		"name":	"Meganisi Sailing",
+		"position":{
+			"latitude":49.8888655,
+			"longitude":10.8841466
+			
+		}
+	},
+	{
+		"name":	"Brauerei Heller",
+		"position":{
+			"latitude":49.8862761,
+			"longitude":10.884851
+			
+		}
+	},
+	{
+		"name":	"Spezial-Keller",
+		"position":{
+			"latitude":49.8847114,
+			"longitude":10.8854123
+			
+		}
+	},
+	{
+		"name":	"Wilde Rose Keller",
+		"position":{
+			"latitude":49.8839696,
+			"longitude":10.8847579
+		
+		}
+	},
+	{
+		"name":	"Fässla",
+		"position":{
+			"latitude":49.8972352,
+			"longitude":10.8906014
+		}
+	}
+]
