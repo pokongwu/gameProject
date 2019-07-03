@@ -17,26 +17,27 @@ public class PositioningHelper {
     public static final Logger LOGGER = Logger.getLogger("PositioningHelper");
 
     public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+        GeoLocation result = new GeoLocation(startingPosition.getLongitude(), startingPosition.getLatitude());
         double vectorLength = 100;
         int counter = 0;
         while (vectorLength > THRESHOLD || counter >= MAXTRIES) {
             counter++;
             // 1. Residuals
-            double[][] residuals = getResiduals(guesses, startingPosition);
+            double[][] residuals = getResiduals(guesses, result);
 
             // 2. Design Matrix
-            double[][] designMatrixArray = calculateDesignMatrix(guesses, startingPosition);
+            double[][] designMatrixArray = calculateDesignMatrix(guesses, result);
 
             // 3. Correction Vector
             SimpleMatrix correctionVector = calculateCorrectionVector(residuals, designMatrixArray);
             vectorLength = Math.sqrt(Math.pow(correctionVector.get(0, 0), 2) + Math.pow(correctionVector.get(1, 0), 2));
             // 4. Repeat until sufficient precision reached
-            startingPosition.setLatitude(startingPosition.getLatitude() + correctionVector.get(0, 0));
-            startingPosition.setLongitude(startingPosition.getLongitude() + correctionVector.get(1, 0));
+            result.setLatitude(result.getLatitude() + correctionVector.get(0, 0));
+            result.setLongitude(result.getLongitude() + correctionVector.get(1, 0));
 
         }
         LOGGER.info("Threshold reached after " + counter + " iterations.");
-        return startingPosition;
+        return result;
     }
 
     private SimpleMatrix calculateCorrectionVector(double[][] residuals, double[][] designMatrixArray) {
