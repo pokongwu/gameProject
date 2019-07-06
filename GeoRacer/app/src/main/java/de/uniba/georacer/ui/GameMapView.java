@@ -71,7 +71,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions currentPosMarkerOptions = new MarkerOptions()
                 .position(currentPosition)
-                .title("You are here")
+                .title(getString(R.string.my_position_title))
                 //https://www.freeiconspng.com/img/1673
                 //https://www.iconfinder.com/icons/2908584/gps_location_marker_pin_user_icon
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
@@ -171,7 +171,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
             //https://www.iconfinder.com/icons/1806295/destination_finish_flag_location_map_marker_icon
             MarkerOptions destinationPosMarker = new MarkerOptions()
                     .position(latLng)
-                    .title("Your destination")
+                    .title(getString(R.string.my_destination_title))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination));
             mMap.addMarker(destinationPosMarker);
 
@@ -180,10 +180,17 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         });
 
         mMap.setOnMarkerClickListener(marker -> {
-            new GuessDistanceDialog().showDialog(context, marker, gameService);
+            if(isLandmark(marker)) {
+                new GuessDistanceDialog().showDialog(context, marker, gameService);
+            }
+
             return false;
         });
     }
 
+    private boolean isLandmark(Marker marker) {
+        return !marker.getTitle().equals(getString(R.string.my_position_title))
+                && !marker.getTitle().equals(getString(R.string.my_destination_title));
+    }
 
 }
