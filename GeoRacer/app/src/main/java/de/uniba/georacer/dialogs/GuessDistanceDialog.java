@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.model.Marker;
@@ -23,22 +24,18 @@ public class GuessDistanceDialog {
         alertDialogBuilderUserInput
                 .setTitle(String.format("Guess the distance to %s",marker.getTitle()))
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogBox, int id) {
-                        gameService.safeGuess();
-                        //TODO parse to int / double
-                        System.out.println("your guess: " + userInputDialogEditText.getText().toString());
-                    }
+                .setPositiveButton("OK", (dialogBox, id) -> {
+                    // logic is in validatorClickListener in order to prevent dismiss on wrong input
                 })
 
                 .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogBox, int id) {
-                                dialogBox.cancel();
-                            }
-                        });
+                        (dialogBox, id) -> dialogBox.cancel());
 
-        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-        alertDialogAndroid.show();
+        AlertDialog alertDialog = alertDialogBuilderUserInput.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        ValidatorClickListener validatorClickListener = new ValidatorClickListener(alertDialog, marker, gameService);
+        positiveButton.setOnClickListener(validatorClickListener);
     }
 }

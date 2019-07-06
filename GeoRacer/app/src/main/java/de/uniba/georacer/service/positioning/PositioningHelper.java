@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import de.uniba.georacer.model.GeoLocation;
+import de.uniba.georacer.model.json.GeoLocation;
 
 public class PositioningHelper {
     public static final double THRESHOLD = 0.1;

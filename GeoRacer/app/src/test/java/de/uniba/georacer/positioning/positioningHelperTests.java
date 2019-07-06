@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import de.uniba.georacer.model.GeoLocation;
+import de.uniba.georacer.model.json.GeoLocation;
 import de.uniba.georacer.service.positioning.PositioningHelper;
 
 import static org.junit.Assert.assertEquals;

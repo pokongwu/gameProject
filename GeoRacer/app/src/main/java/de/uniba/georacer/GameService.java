@@ -18,13 +18,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import de.uniba.georacer.parsing.LandmarkParser;
+import de.uniba.georacer.model.json.Landmark;
+import de.uniba.georacer.parsing.LandmarkProvider;
 import de.uniba.georacer.service.route.RouteService;
 import de.uniba.georacer.service.route.RouteURLs;
 
-public class GameService extends Service implements OnRouteServiceFinished {
-    private GameState gameState;
+public class GameService extends Service implements OnRouteServiceFinished, GameStateListener {
+    private GameStateManager gameStateManager;
+    private LandmarkProvider landmarkProvider;
     private final IBinder binder = new LocalBinder();
     private final List<GameServiceListener> listeners = new ArrayList<GameServiceListener>();
 
@@ -40,8 +43,8 @@ public class GameService extends Service implements OnRouteServiceFinished {
 
     @Override
     public IBinder onBind(Intent intent) {
-        gameState = new GameState();
-        new LandmarkParser().parseLandmarks(getApplicationContext());
+        gameStateManager = new GameStateManager(this);
+        landmarkProvider = new LandmarkProvider(getApplicationContext());
         initLocationServices();
         return binder;
     }
@@ -74,18 +77,18 @@ public class GameService extends Service implements OnRouteServiceFinished {
                 System.out.println("on location changed..");
 
                 // TODO init on another place or should user define the start location?
-                if (gameState.getStart() == null) {
-                    gameState.setStart(location);
+                if (!gameStateManager.isStartPositionSet()) {
+                    gameStateManager.setStart(location);
                 }
 
 
                 // Alert Listeners about changed player position
                 for (GameServiceListener listener : listeners) {
                     listener.updatePlayerPosition(location);
-                    if (gameState.getDestination() == null) {
+                    if (gameStateManager.getDestination() == null) {
                         listener.showToast("Tap on the map in order to set the destination");
                     } else {
-                        listener.showToast("Current destination is " + gameState.getDestination().getLatitude() + ", " + gameState.getDestination().getLongitude());
+                        listener.showToast("Current destination is " + gameStateManager.getDestination().getLatitude() + ", " + gameStateManager.getDestination().getLongitude());
                     }
                 }
             }
@@ -122,11 +125,11 @@ public class GameService extends Service implements OnRouteServiceFinished {
     }
 
     public void startRoutingToDestination(Location destination) {
-        gameState.setDestination(destination);
+        gameStateManager.setDestination(destination);
 
-        if (gameState.getStart() != null) {
+        if (gameStateManager.isStartPositionSet()) {
             RouteService routeService = new RouteService(this);
-            String routeUrl = RouteURLs.getRouteUrl(gameState.getStart(), gameState.getDestination(), getApplicationContext());
+            String routeUrl = RouteURLs.getRouteUrl(gameStateManager.getStartPosition(), gameStateManager.getDestination(), getApplicationContext());
             routeService.execute(routeUrl);
         } else {
             Log.w("##", "no start position available");
@@ -140,9 +143,19 @@ public class GameService extends Service implements OnRouteServiceFinished {
         }
     }
 
+    @Override
+    public void triggertNextRound(int currentRound) {
+        //TODO trigger Next Round in mapview
+        System.out.println("trigger next round!");
+        retrieveRandomLandmarks();
+    }
+
     public void retrieveRandomLandmarks() {
-        //TODO get from LandmarkParser
-        List<MarkerOptions> markers = getDummyMarkers();
+        final int NUMBER_OF_LANDMARKS = 4;
+        List<MarkerOptions> markers = landmarkProvider.getRandomLandmarks(NUMBER_OF_LANDMARKS)
+                .stream()
+                .map(this::mapLandmarkToMarker)
+                .collect(Collectors.toList());
 
         for (GameServiceListener listener : listeners) {
             listener.drawLandmarks(markers);
@@ -150,44 +163,24 @@ public class GameService extends Service implements OnRouteServiceFinished {
         }
     }
 
-    private List<MarkerOptions> getDummyMarkers() {
-        LatLng dummyPos1 = new LatLng(49.906631, 10.898989);
-        MarkerOptions currentPosMarker1 = new MarkerOptions().
-                position(dummyPos1).
-                title("Landmark 1").
-                icon(BitmapDescriptorFactory.
-                defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+    private MarkerOptions mapLandmarkToMarker(Landmark landmark) {
+        LatLng latLng = new LatLng(landmark.getPosition().getLatitude(),
+                landmark.getPosition().getLongitude());
+        String title = landmark.getName();
 
-        LatLng dummyPos2 = new LatLng(49.904382, 10.893471);
-        MarkerOptions currentPosMarker2 = new MarkerOptions().
-                position(dummyPos2).
-                title("Landmark 2").
-                icon(BitmapDescriptorFactory.
-                defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        LatLng dummyPos3 = new LatLng(49.908052, 10.897125);
-        MarkerOptions currentPosMarker3 = new MarkerOptions().
-                position(dummyPos3).
-                title("Landmark 3").
-                icon(BitmapDescriptorFactory.
-                defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        LatLng dummyPos4 = new LatLng(49.906994, 10.891478);
-        MarkerOptions currentPosMarker4 = new MarkerOptions().
-                position(dummyPos4).
-                title("Landmark 4").
-                icon(BitmapDescriptorFactory.
-                defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        List<MarkerOptions> markers = new ArrayList<>();
-        markers.add(currentPosMarker1);
-        markers.add(currentPosMarker2);
-        markers.add(currentPosMarker3);
-        markers.add(currentPosMarker4);
-        return markers;
+        return new MarkerOptions()
+                .position(latLng)
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
     }
 
-    public void safeGuess() {
-        //TODO safe guess in gameState
+    public void saveGuess(String landmarkId, Double guess) {
+        gameStateManager.saveGuess(landmarkId, guess);
+    }
+
+    public void showSnackbar(String message) {
+        for (GameServiceListener listener : listeners) {
+            listener.showToast(message);
+        }
     }
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.uniba.georacer.dialogs.GuessDistanceDialog;
@@ -35,12 +36,14 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     private Snackbar snackbar;
     private MarkerOptions currentPosMarker;
     private MarkerOptions destinationPosMarker;
+    List<Marker> currentVisibleLandmarks;
     // ===== Game Service Connection =====
 
     private ServiceConnection gameServiceCon = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            currentVisibleLandmarks = new ArrayList<>();
             GameService.LocalBinder binder = (GameService.LocalBinder) service;
             gameService = binder.getService();
             gameServiceBound = true;
@@ -96,8 +99,11 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
 
     @Override
     public void drawLandmarks(List<MarkerOptions> markers) {
+        currentVisibleLandmarks.forEach(Marker::remove);
+
         for(MarkerOptions marker : markers) {
-            mMap.addMarker(marker);
+            Marker landmark = mMap.addMarker(marker);
+            currentVisibleLandmarks.add(landmark);
         }
     }
 
@@ -142,6 +148,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        final Context context = this;
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
@@ -154,28 +161,20 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         uiSettings.setMapToolbarEnabled(false);
 
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                Location destination = new Location("map tap");
-                destination.setLatitude(latLng.latitude);
-                destination.setLongitude(latLng.longitude);
+        mMap.setOnMapClickListener(latLng -> {
+            Location destination = new Location("map tap");
+            destination.setLatitude(latLng.latitude);
+            destination.setLongitude(latLng.longitude);
 
-                destinationPosMarker = new MarkerOptions().position(latLng).title("Your destination");
-                mMap.addMarker(destinationPosMarker);
+            destinationPosMarker = new MarkerOptions().position(latLng).title("Your destination");
+            mMap.addMarker(destinationPosMarker);
 
-                gameService.startRoutingToDestination(destination);
-            }
+            gameService.startRoutingToDestination(destination);
         });
 
-        final Context context = this;
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Log.d("#", "onMarkerClick: " + marker.getTitle());
-                new GuessDistanceDialog().showDialog(context, marker, gameService);
-                return false;
-            }
+        mMap.setOnMarkerClickListener(marker -> {
+            new GuessDistanceDialog().showDialog(context, marker, gameService);
+            return false;
         });
     }
 

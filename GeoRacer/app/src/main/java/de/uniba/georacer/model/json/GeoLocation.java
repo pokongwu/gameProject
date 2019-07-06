@@ -1,4 +1,4 @@
-package de.uniba.georacer.model;
+package de.uniba.georacer.model.json;
 
 public class GeoLocation implements Comparable<GeoLocation> {
 
