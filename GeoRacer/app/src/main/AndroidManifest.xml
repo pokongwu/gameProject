@@ -39,13 +39,13 @@
         <activity
             android:name="de.uniba.georacer.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name="de.uniba.georacer.GameMapView">
+        <activity android:name="de.uniba.georacer.ui.GameMapView">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
-            android:name="de.uniba.georacer.MainMenu"
+            android:name="de.uniba.georacer.ui.MainMenu"
             android:label="@string/title_activity_main_menu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -56,7 +56,7 @@
         </activity>
 
         <service
-            android:name="de.uniba.georacer.GameService"
+            android:name="de.uniba.georacer.service.app.GameService"
             android:enabled="true"
             android:exported="true" />
     </application>

@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.service.app;
 
 import android.app.Service;
 import android.content.Context;
@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.uniba.georacer.state.GameStateListener;
+import de.uniba.georacer.state.GameStateManager;
+import de.uniba.georacer.service.http.route.OnRouteServiceFinishedListener;
 import de.uniba.georacer.model.json.Landmark;
 import de.uniba.georacer.parsing.LandmarkProvider;
-import de.uniba.georacer.service.route.RouteService;
-import de.uniba.georacer.service.route.RouteURLs;
+import de.uniba.georacer.service.http.route.RouteService;
+import de.uniba.georacer.service.http.route.RouteURLs;
 
-public class GameService extends Service implements OnRouteServiceFinished, GameStateListener {
+public class GameService extends Service implements OnRouteServiceFinishedListener, GameStateListener {
     private GameStateManager gameStateManager;
     private LandmarkProvider landmarkProvider;
     private final IBinder binder = new LocalBinder();
@@ -52,7 +55,7 @@ public class GameService extends Service implements OnRouteServiceFinished, Game
     // ===== Local Binder =====
 
     public class LocalBinder extends Binder {
-        GameService getService() {
+        public GameService getService() {
             return GameService.this;
         }
     }

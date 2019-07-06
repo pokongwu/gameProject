@@ -1,4 +1,4 @@
-package de.uniba.georacer.service.route;
+package de.uniba.georacer.service.http.route;
 
 /* Ludwig Leuschner
  * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
@@ -16,13 +16,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.uniba.georacer.OnRouteServiceFinished;
-
 public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-    final OnRouteServiceFinished onRouteServiceFinished;
+    final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
 
-    public RouteParserTask(OnRouteServiceFinished onRouteServiceFinished) {
-        this.onRouteServiceFinished = onRouteServiceFinished;
+    public RouteParserTask(OnRouteServiceFinishedListener onRouteServiceFinishedListener) {
+        this.onRouteServiceFinishedListener = onRouteServiceFinishedListener;
     }
 
     // Parsing the data in non-ui thread
@@ -71,6 +69,6 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
         }
 
         // Drawing polyline in the Google Map for the i-th route
-        onRouteServiceFinished.onRouteServiceFinished(lineOptions);
+        onRouteServiceFinishedListener.onRouteServiceFinished(lineOptions);
     }
 }

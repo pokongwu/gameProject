@@ -1,4 +1,4 @@
-package de.uniba.georacer.service.route;
+package de.uniba.georacer.service.http.route;
 
 /* Ludwig Leuschner
  * initial source: https://github.com/bashantad/Tourfit-android/blob/master/src/com/example/tourfit/DirectionsJSONParser.java

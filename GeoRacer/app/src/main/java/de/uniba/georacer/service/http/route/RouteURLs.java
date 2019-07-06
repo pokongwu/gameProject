@@ -1,4 +1,4 @@
-package de.uniba.georacer.service.route;
+package de.uniba.georacer.service.http.route;
 
 /* Ludwig Leuschner
  * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points

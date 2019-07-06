@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.ui;
 
 import android.Manifest;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package de.uniba.georacer.dialogs;
+package de.uniba.georacer.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,11 +6,11 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.gms.maps.model.Marker;
 
-import de.uniba.georacer.GameService;
+import de.uniba.georacer.service.app.GameService;
+//TODO check where this file is defined and move package to georacer
 import de.uniba.ioannidis.christos.georacer.R;
 
 public class GuessDistanceDialog {
@@ -20,7 +20,6 @@ public class GuessDistanceDialog {
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
         alertDialogBuilderUserInput.setView(mView);
 
-        final EditText userInputDialogEditText = mView.findViewById(R.id.userInputDialog);
         alertDialogBuilderUserInput
                 .setTitle(String.format("Guess the distance to %s",marker.getTitle()))
                 .setCancelable(false)

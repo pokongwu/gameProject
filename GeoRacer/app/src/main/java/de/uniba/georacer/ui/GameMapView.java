@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.ui;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,7 +24,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uniba.georacer.dialogs.GuessDistanceDialog;
+import de.uniba.georacer.service.app.GameService;
+import de.uniba.georacer.service.app.GameServiceListener;
+import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
 import de.uniba.ioannidis.christos.georacer.R;
 
 

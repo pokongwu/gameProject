@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.service.app;
 
 import android.location.Location;
 

@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.state;
 
 import android.location.Location;
 
