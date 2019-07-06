@@ -44,6 +44,6 @@ public class LandmarkProvider {
         return new MarkerOptions()
                 .position(latLng)
                 .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
     }
 }

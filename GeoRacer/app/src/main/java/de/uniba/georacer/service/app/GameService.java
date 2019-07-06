@@ -157,6 +157,10 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         }
     }
 
+    public String getGuess(String landmarkId) {
+        return gameStateManager.getGuess(landmarkId);
+    }
+
     public void saveGuess(String landmarkId, Double guess) {
         gameStateManager.saveGuess(landmarkId, guess);
     }

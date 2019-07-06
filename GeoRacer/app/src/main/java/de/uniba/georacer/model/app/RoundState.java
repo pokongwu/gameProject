@@ -12,6 +12,14 @@ public class RoundState {
         guesses = new HashMap<>();
     }
 
+    public String getGuess(String landmarkId) {
+        if(!guesses.containsKey(landmarkId)) {
+            return "";
+        }
+
+        return String.valueOf(guesses.get(landmarkId));
+    }
+
     public void addGuess(String landmarkId, Double guess) {
         this.guesses.put(landmarkId, guess);
     }

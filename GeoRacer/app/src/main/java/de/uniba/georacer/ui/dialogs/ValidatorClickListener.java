@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
 import de.uniba.georacer.service.app.GameService;
@@ -28,6 +29,8 @@ public class ValidatorClickListener implements View.OnClickListener {
             double guess = parseInput(userInput.getText().toString());
             //TODO use different landmarkId
             gameService.saveGuess(marker.getTitle(), guess);
+            this.marker.setIcon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             parentDialog.dismiss();
         } catch (NumberFormatException numberFormatException) {
             //TODO snackbar is in background and not sufficient for a warning

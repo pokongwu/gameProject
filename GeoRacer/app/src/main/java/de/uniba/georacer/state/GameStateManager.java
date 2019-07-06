@@ -41,6 +41,10 @@ public class GameStateManager {
         gameState.setDestination(destination);
     }
 
+    public String getGuess(String landmarkId) {
+        return gameState.getGuess(landmarkId);
+    }
+
     public void saveGuess(String landmarkId, Double guess) {
         gameState.saveGuess(landmarkId, guess);
 

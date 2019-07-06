@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.model.Marker;
 
@@ -18,6 +19,8 @@ public class GuessDistanceDialog {
         View mView = layoutInflaterAndroid.inflate(R.layout.guess_input_dialog, null);
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
         alertDialogBuilderUserInput.setView(mView);
+        final EditText userInput = mView.findViewById(R.id.userInputDialog);
+        userInput.setText(gameService.getGuess(marker.getTitle()));
 
         alertDialogBuilderUserInput
                 .setTitle(String.format("Guess the distance to %s",marker.getTitle()))

@@ -51,6 +51,11 @@ public class GameState {
         return this.roundStates.get(currentRound - 1);
     }
 
+    public String getGuess(String landmarkId) {
+        RoundState curRoundState = getCurrentRoundState();
+        return curRoundState.getGuess(landmarkId);
+    }
+
     public void saveGuess(String landmarkId, Double guess) {
         RoundState curRoundState = getCurrentRoundState();
         curRoundState.addGuess(landmarkId, guess);
