@@ -7,7 +7,7 @@ package de.uniba.georacer.service.http.route;
 import android.content.Context;
 import android.location.Location;
 
-import de.uniba.ioannidis.christos.georacer.R;
+import de.uniba.georacer.R;
 
 public class RouteURLs {
     public static String getRouteUrl(Location start, Location destination, Context context) {

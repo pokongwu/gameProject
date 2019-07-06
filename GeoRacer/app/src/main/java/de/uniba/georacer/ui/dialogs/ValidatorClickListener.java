@@ -7,7 +7,7 @@ import android.widget.EditText;
 import com.google.android.gms.maps.model.Marker;
 
 import de.uniba.georacer.service.app.GameService;
-import de.uniba.ioannidis.christos.georacer.R;
+import de.uniba.georacer.R;
 
 public class ValidatorClickListener implements View.OnClickListener {
     private final Dialog parentDialog;

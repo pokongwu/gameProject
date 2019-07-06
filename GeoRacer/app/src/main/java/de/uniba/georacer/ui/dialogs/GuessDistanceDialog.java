@@ -9,9 +9,8 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.model.Marker;
 
+import de.uniba.georacer.R;
 import de.uniba.georacer.service.app.GameService;
-//TODO check where this file is defined and move package to georacer
-import de.uniba.ioannidis.christos.georacer.R;
 
 public class GuessDistanceDialog {
     public void showDialog(Context context, Marker marker, final GameService gameService) {

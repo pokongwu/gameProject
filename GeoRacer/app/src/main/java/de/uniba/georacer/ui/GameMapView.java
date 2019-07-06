@@ -27,7 +27,7 @@ import java.util.List;
 import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.service.app.GameServiceListener;
 import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
-import de.uniba.ioannidis.christos.georacer.R;
+import de.uniba.georacer.R;
 
 
 public class GameMapView extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
