@@ -11,22 +11,17 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import de.uniba.georacer.state.GameStateListener;
-import de.uniba.georacer.state.GameStateManager;
 import de.uniba.georacer.service.http.route.OnRouteServiceFinishedListener;
-import de.uniba.georacer.model.json.Landmark;
-import de.uniba.georacer.parsing.LandmarkProvider;
 import de.uniba.georacer.service.http.route.RouteService;
 import de.uniba.georacer.service.http.route.RouteURLs;
+import de.uniba.georacer.state.GameStateListener;
+import de.uniba.georacer.state.GameStateManager;
 
 public class GameService extends Service implements OnRouteServiceFinishedListener, GameStateListener {
     private GameStateManager gameStateManager;
@@ -154,27 +149,12 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     public void retrieveRandomLandmarks() {
-        final int NUMBER_OF_LANDMARKS = 4;
-        List<MarkerOptions> markers = landmarkProvider.getRandomLandmarks(NUMBER_OF_LANDMARKS)
-                .stream()
-                .map(this::mapLandmarkToMarker)
-                .collect(Collectors.toList());
+        List<MarkerOptions> markers = landmarkProvider.getMarkerOptionsFromLandmarks();
 
         for (GameServiceListener listener : listeners) {
             listener.drawLandmarks(markers);
             listener.showToast("Tap on the marker and guess the distance!");
         }
-    }
-
-    private MarkerOptions mapLandmarkToMarker(Landmark landmark) {
-        LatLng latLng = new LatLng(landmark.getPosition().getLatitude(),
-                landmark.getPosition().getLongitude());
-        String title = landmark.getName();
-
-        return new MarkerOptions()
-                .position(latLng)
-                .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
     }
 
     public void saveGuess(String landmarkId, Double guess) {

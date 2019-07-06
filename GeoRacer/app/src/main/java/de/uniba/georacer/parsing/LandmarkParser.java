@@ -13,17 +13,15 @@ import java.util.List;
 
 import de.uniba.georacer.model.json.Landmark;
 
-public class LandmarkProvider {
+public class LandmarkParser {
     private List<Landmark> landmarks;
 
-    public LandmarkProvider(Context context) {
+    public LandmarkParser(Context context) {
         landmarks = parseLandmarks(context);
     }
 
-    public List<Landmark> getRandomLandmarks(int numberOfLandmarks) {
-        Collections.shuffle(landmarks);
-
-        return landmarks.subList(0, numberOfLandmarks);
+    public List<Landmark> getLandmarks() {
+        return landmarks;
     }
 
     private List<Landmark> parseLandmarks(Context context) {
