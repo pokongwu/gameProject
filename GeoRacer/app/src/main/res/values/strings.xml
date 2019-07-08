@@ -4,4 +4,7 @@
     <string name="button">Start Game</string>
     <string name="backButton">Menu</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="my_position_title">You are here</string>
+    <string name="my_destination_title">Your destination</string>
 </resources>

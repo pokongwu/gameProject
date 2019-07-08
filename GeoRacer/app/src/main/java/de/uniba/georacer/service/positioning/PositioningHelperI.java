@@ -2,7 +2,7 @@ package de.uniba.georacer.service.positioning;
 
 import java.util.Map;
 
-import de.uniba.georacer.model.GeoLocation;
+import de.uniba.georacer.model.json.GeoLocation;
 
 public interface PositioningHelperI {
 

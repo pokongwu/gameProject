@@ -1,4 +1,4 @@
-package de.uniba.georacer;
+package de.uniba.georacer.ui;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,15 +16,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import de.uniba.georacer.dialogs.GuessDistanceDialog;
-import de.uniba.ioannidis.christos.georacer.R;
+import de.uniba.georacer.service.app.GameService;
+import de.uniba.georacer.service.app.GameServiceListener;
+import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
+import de.uniba.georacer.R;
 
 
 public class GameMapView extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
@@ -33,14 +36,15 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     protected boolean gameServiceBound;
     private GoogleMap mMap;
     private Snackbar snackbar;
-    private MarkerOptions currentPosMarker;
-    private MarkerOptions destinationPosMarker;
+    private Marker currentPositionMarker;
+    List<Marker> currentVisibleLandmarks;
     // ===== Game Service Connection =====
 
     private ServiceConnection gameServiceCon = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            currentVisibleLandmarks = new ArrayList<>();
             GameService.LocalBinder binder = (GameService.LocalBinder) service;
             gameService = binder.getService();
             gameServiceBound = true;
@@ -55,14 +59,24 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
 
     @Override
     public void updatePlayerPosition(Location location) {
+        if(currentPositionMarker != null) {
+            currentPositionMarker.remove();
+        }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(),
                         location.getLongitude()), 15f));
 
         //TODO write util class for converting Location <-> LatLng
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        currentPosMarker = new MarkerOptions().position(currentPosition).title("You are here");
-        mMap.addMarker(currentPosMarker);
+        MarkerOptions currentPosMarkerOptions = new MarkerOptions()
+                .position(currentPosition)
+                .title(getString(R.string.my_position_title))
+                //https://www.freeiconspng.com/img/1673
+                //https://www.iconfinder.com/icons/2908584/gps_location_marker_pin_user_icon
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
+
+        currentPositionMarker = mMap.addMarker(currentPosMarkerOptions);
     }
 
     @Override
@@ -86,18 +100,17 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
 
     @Override
     public void drawRoute(PolylineOptions route) {
-        mMap.clear();
         mMap.addPolyline(route);
-        mMap.addMarker(currentPosMarker);
-        mMap.addMarker(destinationPosMarker);
-
         gameService.retrieveRandomLandmarks();
     }
 
     @Override
     public void drawLandmarks(List<MarkerOptions> markers) {
+        currentVisibleLandmarks.forEach(Marker::remove);
+
         for(MarkerOptions marker : markers) {
-            mMap.addMarker(marker);
+            Marker landmark = mMap.addMarker(marker);
+            currentVisibleLandmarks.add(landmark);
         }
     }
 
@@ -142,42 +155,42 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        final Context context = this;
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng bbg = new LatLng(49.889371, 10.887191);
-        mMap.addMarker(new MarkerOptions().position(bbg).title("Klosterbräu"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bbg));
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
 
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                Location destination = new Location("map tap");
-                destination.setLatitude(latLng.latitude);
-                destination.setLongitude(latLng.longitude);
+        mMap.setOnMapClickListener(latLng -> {
+            Location destination = new Location("map tap");
+            destination.setLatitude(latLng.latitude);
+            destination.setLongitude(latLng.longitude);
 
-                destinationPosMarker = new MarkerOptions().position(latLng).title("Your destination");
-                mMap.addMarker(destinationPosMarker);
+            //https://www.iconfinder.com/icons/1806295/destination_finish_flag_location_map_marker_icon
+            MarkerOptions destinationPosMarker = new MarkerOptions()
+                    .position(latLng)
+                    .title(getString(R.string.my_destination_title))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination));
+            mMap.addMarker(destinationPosMarker);
 
-                gameService.startRoutingToDestination(destination);
-            }
+            gameService.startRoutingToDestination(destination);
+            mMap.setOnMapClickListener(null);
         });
 
-        final Context context = this;
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Log.d("#", "onMarkerClick: " + marker.getTitle());
+        mMap.setOnMarkerClickListener(marker -> {
+            if(isLandmark(marker)) {
                 new GuessDistanceDialog().showDialog(context, marker, gameService);
-                return false;
             }
+
+            return false;
         });
     }
 
+    private boolean isLandmark(Marker marker) {
+        return !marker.getTitle().equals(getString(R.string.my_position_title))
+                && !marker.getTitle().equals(getString(R.string.my_destination_title));
+    }
 
 }

@@ -1,4 +1,4 @@
-package de.uniba.georacer.service.route;
+package de.uniba.georacer.service.http.route;
 
 /* Ludwig Leuschner
  * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
@@ -14,14 +14,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import de.uniba.georacer.OnRouteServiceFinished;
-
 //TODO implement RouteShape https://developer.mapquest.com/documentation/open/directions-api/route-shape/get/
 public class RouteService extends AsyncTask {
-    private final OnRouteServiceFinished onRouteServiceFinished;
+    private final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
 
-    public RouteService(OnRouteServiceFinished onRouteServiceFinished) {
-        this.onRouteServiceFinished = onRouteServiceFinished;
+    public RouteService(OnRouteServiceFinishedListener onRouteServiceFinishedListener) {
+        this.onRouteServiceFinishedListener = onRouteServiceFinishedListener;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class RouteService extends AsyncTask {
     protected void onPostExecute(Object result) {
         super.onPostExecute(result);
 
-        RouteParserTask parserTask = new RouteParserTask(onRouteServiceFinished);
+        RouteParserTask parserTask = new RouteParserTask(onRouteServiceFinishedListener);
         parserTask.execute((String) result);
     }
 

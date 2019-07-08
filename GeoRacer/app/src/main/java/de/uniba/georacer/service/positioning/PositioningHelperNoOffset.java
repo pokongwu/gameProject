@@ -6,7 +6,8 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import de.uniba.georacer.model.GeoLocation;
+import de.uniba.georacer.model.json.GeoLocation;
+
 
 public class PositioningHelperNoOffset extends PositioningHelper implements PositioningHelperI {
     public static final double THRESHOLD = 0.1;

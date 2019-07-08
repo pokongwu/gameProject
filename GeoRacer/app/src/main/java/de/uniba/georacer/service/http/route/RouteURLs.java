@@ -1,4 +1,4 @@
-package de.uniba.georacer.service.route;
+package de.uniba.georacer.service.http.route;
 
 /* Ludwig Leuschner
  * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
@@ -7,7 +7,7 @@ package de.uniba.georacer.service.route;
 import android.content.Context;
 import android.location.Location;
 
-import de.uniba.ioannidis.christos.georacer.R;
+import de.uniba.georacer.R;
 
 public class RouteURLs {
     public static String getRouteUrl(Location start, Location destination, Context context) {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.uniba.georacer.model.GeoLocation;
+import de.uniba.georacer.model.json.GeoLocation;
 import de.uniba.georacer.service.positioning.PositioningHelperI;
 import de.uniba.georacer.service.positioning.PositioningHelperNoOffset;
 import de.uniba.georacer.service.positioning.PositioningHelperUTM;

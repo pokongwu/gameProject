@@ -1,4 +1,4 @@
-package de.uniba.georacer.model;
+package de.uniba.georacer.model.json;
 
 import de.uniba.georacer.service.positioning.UTM;
 import de.uniba.georacer.service.positioning.WGS84;
