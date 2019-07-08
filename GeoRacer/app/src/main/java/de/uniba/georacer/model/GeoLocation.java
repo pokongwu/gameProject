@@ -1,16 +1,42 @@
 package de.uniba.georacer.model;
 
-public class GeoLocation implements Comparable<GeoLocation> {
+import de.uniba.georacer.service.positioning.UTM;
+import de.uniba.georacer.service.positioning.WGS84;
+
+public class GeoLocation {
 
     private double longitude;
     private double latitude;
 
+    private double northling;
+    private double eastling;
 
-    public GeoLocation(double longitude, double latitude) {
+    public double longOffset;
+    public double latOffset;
+
+    private GeoLocation(double latitude, double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
+
     }
 
+    public static GeoLocation fromWGS84(double latitude, double longitude) {
+        GeoLocation geoLocation = new GeoLocation(latitude, longitude);
+        WGS84 wgs84 = new WGS84(latitude, longitude);
+        UTM utm = new UTM(wgs84);
+        geoLocation.setNorthling(utm.getNorthing());
+        geoLocation.setEastling(utm.getEasting());
+        return geoLocation;
+    }
+
+    public static GeoLocation fromUTM(double eastling, double northling) {
+        UTM utm = new UTM(32, 'U', eastling, northling);
+        WGS84 wgs84 = new WGS84(utm);
+        GeoLocation geoLocation = new GeoLocation(wgs84.getLatitude(), wgs84.getLongitude());
+        geoLocation.setEastling(utm.getEasting());
+        geoLocation.setNorthling(utm.getNorthing());
+        return geoLocation;
+    }
 
     public double getLongitude() {
         return longitude;
@@ -20,60 +46,20 @@ public class GeoLocation implements Comparable<GeoLocation> {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+
+    public double getEastling() {
+        return eastling;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public double getNorthling() {
+        return northling;
     }
 
-    public int getLongitudeOffset(int offsetAfterDecimalPoint) {
-        return getOffset(longitude, offsetAfterDecimalPoint);
+    public void setNorthling(double northling) {
+        this.northling = northling;
     }
 
-    public int getLatitudeOffset(int offsetAfterDecimalPoint) {
-        return getOffset(latitude, offsetAfterDecimalPoint);
+    public void setEastling(double eastling) {
+        this.eastling = eastling;
     }
-
-    public double getLongitudeBase(int offsetAfterDecimalPoint) {
-        return getBase(longitude, offsetAfterDecimalPoint);
-    }
-
-    public double getLatitudeBase(int offsetAfterDecimalPoint) {
-        return getBase(latitude, offsetAfterDecimalPoint);
-    }
-
-    private double getBase(double value, int offsetAfterDecimalPoint) {
-
-        String valueString = String.valueOf(value);
-        String[] values = String.valueOf(value).split("\\.");
-        int index = +values[0].length() + 1 + offsetAfterDecimalPoint; // ad everything before and +1 for the decimal point
-        if (index >= valueString.length()) {
-            throw new IllegalArgumentException("Offset of " + offsetAfterDecimalPoint + " is too big for value " + value);
-        }
-        double base = Double.parseDouble(valueString.substring(0, index));
-        return base;
-
-    }
-
-
-    public int getOffset(double value, int offsetAfterDecimalPoint) {
-        String[] values = String.valueOf(value).split("\\.");
-        if (values[1].length() < offsetAfterDecimalPoint) {
-            //TODO: not enough decimals points
-            return Integer.parseInt(values[1]);
-        }
-        values[1] = values[1].substring(offsetAfterDecimalPoint - 1);
-        int decimals = Integer.parseInt(values[1]);
-        return decimals;
-    }
-
-    @Override
-    public int compareTo(GeoLocation location) {
-        // We need some order to be able to test reliably
-        return (int) (this.longitude - location.getLongitude());
-    }
-
-
 }
