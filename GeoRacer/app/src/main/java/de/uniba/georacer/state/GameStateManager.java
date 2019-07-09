@@ -2,7 +2,12 @@ package de.uniba.georacer.state;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+
 import de.uniba.georacer.model.app.GameState;
+import de.uniba.georacer.model.json.Position;
 
 public class GameStateManager {
     private final GameState gameState;
@@ -39,6 +44,23 @@ public class GameStateManager {
 
     public void setDestination(Location destination) {
         gameState.setDestination(destination);
+    }
+
+    public void setWaypoints(List<LatLng> waypoints) {
+        gameState.setWaypoints(waypoints);
+    }
+
+    public Location getCurrentWaypoint() {
+        LatLng waypointLatLng = gameState.getCurrentWaypoint();
+        if(waypointLatLng == null) {
+            return null;
+        }
+
+        Location waypoint = new Location("");
+        waypoint.setLatitude(waypointLatLng.latitude);
+        waypoint.setLongitude(waypointLatLng.longitude);
+
+        return waypoint;
     }
 
     public String getGuess(String landmarkId) {

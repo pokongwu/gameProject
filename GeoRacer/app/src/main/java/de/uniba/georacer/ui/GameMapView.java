@@ -106,8 +106,6 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
             mMap.addCircle(new CircleOptions()
                     .center(waypoint).radius(50).strokeColor(getColor(R.color.waypointStroke)));
         }
-
-        gameService.retrieveRandomLandmarks();
     }
 
     @Override

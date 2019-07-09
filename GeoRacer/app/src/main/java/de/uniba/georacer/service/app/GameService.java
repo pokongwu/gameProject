@@ -90,6 +90,20 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
                         listener.showToast("Current destination is " + gameStateManager.getDestination().getLatitude() + ", " + gameStateManager.getDestination().getLongitude());
                     }
                 }
+
+                if(isUserNextToTheWaypoint(location)) {
+                    //TODO only show landmark once for every waypoint. if user moves in the circle, the landmarks will change!
+                    retrieveRandomLandmarks();
+                }
+            }
+
+            private boolean isUserNextToTheWaypoint(Location loacation) {
+                Location currentWaypoint = gameStateManager.getCurrentWaypoint();
+                if(currentWaypoint == null) {
+                    return false;
+                }
+
+                return currentWaypoint.distanceTo(loacation) <= 45;
             }
 
             @Override
@@ -142,6 +156,8 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
                 listener.showToast("Can't find a suitable route, please pick a new destination.");
             }
         }
+
+        gameStateManager.setWaypoints(waypoints);
 
         for (GameServiceListener listener : listeners) {
             listener.drawRoute(route, waypoints);

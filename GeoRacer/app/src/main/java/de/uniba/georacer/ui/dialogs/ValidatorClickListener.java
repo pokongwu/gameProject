@@ -28,9 +28,9 @@ public class ValidatorClickListener implements View.OnClickListener {
         try {
             double guess = parseInput(userInput.getText().toString());
             //TODO use different landmarkId
-            gameService.saveGuess(marker.getTitle(), guess);
             this.marker.setIcon(
                     BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            gameService.saveGuess(marker.getTitle(), guess);
             parentDialog.dismiss();
         } catch (NumberFormatException numberFormatException) {
             //TODO snackbar is in background and not sufficient for a warning

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+ * Testing: start: 49.9064  10.895510
+ *          second: 49.903258 10.892
+ */
 
 //TODO error handling eg. to few points
 public class WaypointExtractor {

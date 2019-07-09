@@ -2,6 +2,8 @@ package de.uniba.georacer.model.app;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class GameState {
     private Location start;
     private Location destination;
     private List<RoundState> roundStates;
+    private List<LatLng> waypoints;
 
     public GameState() {
         roundStates = new ArrayList<>();
@@ -49,6 +52,18 @@ public class GameState {
 
     private RoundState getCurrentRoundState() {
         return this.roundStates.get(currentRound - 1);
+    }
+
+    public void setWaypoints(List<LatLng> waypoints) {
+        this.waypoints = waypoints;
+    }
+
+    public LatLng getCurrentWaypoint() {
+        if(this.waypoints == null) {
+            return null;
+        }
+
+        return this.waypoints.get(currentRound - 1);
     }
 
     public String getGuess(String landmarkId) {
