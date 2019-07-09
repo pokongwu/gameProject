@@ -92,7 +92,6 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
                 }
 
                 if(isUserNextToTheWaypoint(location)) {
-                    //TODO only show landmark once for every waypoint. if user moves in the circle, the landmarks will change!
                     retrieveRandomLandmarks();
                 }
             }

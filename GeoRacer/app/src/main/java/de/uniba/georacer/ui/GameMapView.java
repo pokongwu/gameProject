@@ -110,17 +110,18 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
 
     @Override
     public void drawLandmarks(List<MarkerOptions> markers) {
-        clearLandmarks();
-
-        for(MarkerOptions marker : markers) {
-            Marker landmark = mMap.addMarker(marker);
-            currentVisibleLandmarks.add(landmark);
+        if(currentVisibleLandmarks.size() == 0) {
+            for (MarkerOptions marker : markers) {
+                Marker landmark = mMap.addMarker(marker);
+                currentVisibleLandmarks.add(landmark);
+            }
         }
     }
 
     @Override
     public void clearLandmarks() {
         currentVisibleLandmarks.forEach(Marker::remove);
+        currentVisibleLandmarks.clear();
     }
 
     @Override

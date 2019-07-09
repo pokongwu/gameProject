@@ -7,7 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import de.uniba.georacer.model.app.GameState;
-import de.uniba.georacer.model.json.Position;
 
 public class GameStateManager {
     private final GameState gameState;
