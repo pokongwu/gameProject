@@ -11,15 +11,19 @@ public class GeoLocation {
     private double northling;
     private double eastling;
 
-    public double longOffset;
-    public double latOffset;
-
     private GeoLocation(double latitude, double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
 
     }
 
+    /**
+     * Builds a GeoLocation from WGS84 coordinates
+     *
+     * @param latitude  wgs84 latitude
+     * @param longitude wgs84 longitude
+     * @return an instance of GeoLocation
+     */
     public static GeoLocation fromWGS84(double latitude, double longitude) {
         GeoLocation geoLocation = new GeoLocation(latitude, longitude);
         WGS84 wgs84 = new WGS84(latitude, longitude);
@@ -29,6 +33,13 @@ public class GeoLocation {
         return geoLocation;
     }
 
+    /**
+     * Builds a GeoLocation from UTM coordinates. Simplification: Always in Zone 32U
+     *
+     * @param eastling  east in utm
+     * @param northling north in utm
+     * @return an instance of GeoLocation
+     */
     public static GeoLocation fromUTM(double eastling, double northling) {
         UTM utm = new UTM(32, 'U', eastling, northling);
         WGS84 wgs84 = new WGS84(utm);

@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 import de.uniba.georacer.model.json.GeoLocation;
 
 
+/**
+ * WARNING: This class is mainly for testing purposes to analyze the algorithms working.
+ */
 public class PositioningHelperNoOffset extends PositioningHelper implements PositioningHelperI {
     public static final double THRESHOLD = 0.1;
     private static final int MAXTRIES = 100;

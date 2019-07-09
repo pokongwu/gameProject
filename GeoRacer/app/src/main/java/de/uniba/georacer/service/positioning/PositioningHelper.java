@@ -2,9 +2,7 @@ package de.uniba.georacer.service.positioning;
 
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import de.uniba.georacer.model.json.GeoLocation;
 
@@ -30,6 +28,7 @@ public abstract class PositioningHelper {
      * @return the residuals in a list
      */
     public double[][] getResiduals(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+
         //guesses = new TreeMap<>(guesses);
         double[][] result = new double[guesses.keySet().size()][1];
 
@@ -47,41 +46,10 @@ public abstract class PositioningHelper {
     }
 
     /**
-     * Give it a list of doubles, it will determine the offset you can use. This is based on how many digits they have in common.
-     * For example 10.881, 10.889, 10.89 will give you an offset of 1, indicating you can split it like so: 10.8 + xy * 10^-1.
-     * 0 represents no identical digits after the decimal point.
-     *
-     * @param values List of doubles
-     * @return returns the 10 potency for the offset
-     */
-    public int determineOffset(List<Double> values) {
-        String[] previousValue = String.valueOf(values.get(0)).split("\\.");
-        int result = 0;
-        // Outer Loop iterates over digits
-        for (int i = 0; i < previousValue[1].length(); i++) { // check 10 digits
-            // Inner Loop iterates over all locations
-            for (int j = 1; j < values.size(); j++) {
-                String[] value = String.valueOf(values.get(j)).split("\\.");
-                if (value[1].charAt(i) == (previousValue[1].charAt(i))) {
-                    if (j == values.size() - 1) { // If all values same at i position, and we have looked at all positions, increase result
-                        result = i + 1; // i+1 because we don't want indices, but offset indicators e.g. 10^-3
-                    } else {
-                        continue;
-                    }
-                } else {
-                    return result;
-                }
-                previousValue = value;
-            }
-        }
-        return result;
-    }
-
-    /**
      * http://rosettacode.org/wiki/Haversine_formula#Java Haversine Formula to calculate approximation of distance
      * between two points on a sphere. Accurate enough for this application context (close distances)
      */
-    public static double distFrom(GeoLocation location1, GeoLocation location2) {
+    public static double haversianDistance(GeoLocation location1, GeoLocation location2) {
         double earthRadius = 6371000; // Returns Meters
         double dLat = Math.toRadians(location2.getLatitude() - location1.getLatitude());
         double dLng = Math.toRadians(location2.getLongitude() - location1.getLongitude());
