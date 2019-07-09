@@ -49,7 +49,12 @@ public class GameStateManager {
         gameState.saveGuess(landmarkId, guess);
 
         if(gameState.isRoundFinished()) {
-            gameStateListener.triggertNextRound(gameState.getCurrentRound());
+            if(gameState.isGameFinished()) {
+                //TODO trigger show finish screen
+            } else {
+                gameState.startNewRound();
+                gameStateListener.triggertNextRound(gameState.getCurrentRound());
+            }
         }
     }
 }

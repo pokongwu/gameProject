@@ -66,6 +66,11 @@ public class GameState {
         return curRoundState.isRoundFinished();
     }
 
+    public boolean isGameFinished() {
+        final int NUMBER_OF_ROUNDS = 3;
+        return roundCounter >= NUMBER_OF_ROUNDS;
+    }
+
 
     public void startNewRound() {
         roundCounter++;

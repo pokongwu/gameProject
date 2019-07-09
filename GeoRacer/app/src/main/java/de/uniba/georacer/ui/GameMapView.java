@@ -17,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -99,19 +100,29 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     }
 
     @Override
-    public void drawRoute(PolylineOptions route) {
+    public void drawRoute(PolylineOptions route, List<LatLng> waypoints) {
         mMap.addPolyline(route);
+        for(LatLng waypoint : waypoints) {
+            mMap.addCircle(new CircleOptions()
+                    .center(waypoint).radius(50).strokeColor(getColor(R.color.waypointStroke)));
+        }
+
         gameService.retrieveRandomLandmarks();
     }
 
     @Override
     public void drawLandmarks(List<MarkerOptions> markers) {
-        currentVisibleLandmarks.forEach(Marker::remove);
+        clearLandmarks();
 
         for(MarkerOptions marker : markers) {
             Marker landmark = mMap.addMarker(marker);
             currentVisibleLandmarks.add(landmark);
         }
+    }
+
+    @Override
+    public void clearLandmarks() {
+        currentVisibleLandmarks.forEach(Marker::remove);
     }
 
     @Override

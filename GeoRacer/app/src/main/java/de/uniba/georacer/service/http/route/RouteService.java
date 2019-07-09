@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-//TODO implement RouteShape https://developer.mapquest.com/documentation/open/directions-api/route-shape/get/
 public class RouteService extends AsyncTask {
     private final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
 

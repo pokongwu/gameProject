@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -135,17 +136,24 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     @Override
-    public void onRouteServiceFinished(PolylineOptions route) {
+    public void onRouteServiceFinished(PolylineOptions route, List<LatLng> waypoints) {
+        if(route == null) {
+            for (GameServiceListener listener : listeners) {
+                listener.showToast("Can't find a suitable route, please pick a new destination.");
+            }
+        }
+
         for (GameServiceListener listener : listeners) {
-            listener.drawRoute(route);
+            listener.drawRoute(route, waypoints);
         }
     }
 
     @Override
     public void triggertNextRound(int currentRound) {
-        //TODO trigger Next Round in mapview
-        System.out.println("trigger next round!");
-        retrieveRandomLandmarks();
+        for (GameServiceListener listener : listeners) {
+            listener.showToast("Please walk to the next waypoint.");
+            listener.clearLandmarks();
+        }
     }
 
     public void retrieveRandomLandmarks() {
@@ -153,7 +161,7 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
         for (GameServiceListener listener : listeners) {
             listener.drawLandmarks(markers);
-            listener.showToast("Tap on the marker and guess the distance!");
+            listener.showToast("Tap on the marker and guess the distance.");
         }
     }
 

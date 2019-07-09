@@ -32,6 +32,7 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
 
         try {
             jObject = new JSONObject(jsonData[0]);
+            //TODO maybe switch to gson?
             DirectionsJSONParser parser = new DirectionsJSONParser();
 
             routes = parser.parse(jObject);
@@ -43,11 +44,11 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
 
     @Override
     protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-        PolylineOptions lineOptions = null;
+        PolylineOptions route = null;
 
         for (int i = 0; i < result.size(); i++) {
             ArrayList points = new ArrayList();
-            lineOptions = new PolylineOptions();
+            route = new PolylineOptions();
 
             List<HashMap<String, String>> path = result.get(i);
 
@@ -61,14 +62,15 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
                 points.add(position);
             }
 
-            lineOptions.addAll(points);
-            lineOptions.width(12);
-            lineOptions.color(Color.RED);
-            lineOptions.geodesic(true);
+            route.addAll(points);
+            route.width(12);
+            route.color(Color.RED);
+            route.geodesic(true);
 
         }
 
-        // Drawing polyline in the Google Map for the i-th route
-        onRouteServiceFinishedListener.onRouteServiceFinished(lineOptions);
+        List<LatLng> waypoints = new WaypointExtractor().getWaypoints(route);
+
+        onRouteServiceFinishedListener.onRouteServiceFinished(route, waypoints);
     }
 }
