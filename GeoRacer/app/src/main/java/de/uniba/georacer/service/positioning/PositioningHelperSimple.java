@@ -12,10 +12,10 @@ import de.uniba.georacer.model.json.GeoLocation;
 /**
  * WARNING: This class is mainly for testing purposes to analyze the algorithms working.
  */
-public class PositioningHelperNoOffset extends PositioningHelper implements PositioningHelperI {
+public class PositioningHelperSimple extends PositioningHelper implements PositioningHelperI {
     public static final double THRESHOLD = 0.1;
     private static final int MAXTRIES = 100;
-    public static final Logger LOGGER = Logger.getLogger("PositioningHelperNoOffset");
+    public static final Logger LOGGER = Logger.getLogger("PositioningHelperSimple");
 
     public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
         GeoLocation result = GeoLocation.fromWGS84(startingPosition.getLatitude(), startingPosition.getLongitude());
@@ -45,7 +45,7 @@ public class PositioningHelperNoOffset extends PositioningHelper implements Posi
     public double[][] calculateDesignMatrix(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
         // Derivative for x:  x - x^i / sqrt((x^i - x)^2 + (y^i - y)^2)
         // 2-Dimensional (x and y values)
-        guesses.keySet().stream().sorted(Comparator.comparingDouble(g -> g.getLatitude()));
+
         double[][] designMatrix = new double[guesses.keySet().size()][2];
         int i = 0;
         for (GeoLocation location : guesses.keySet()) {

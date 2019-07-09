@@ -29,7 +29,7 @@ public abstract class PositioningHelper {
      */
     public double[][] getResiduals(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
 
-        //guesses = new TreeMap<>(guesses);
+
         double[][] result = new double[guesses.keySet().size()][1];
 
         int i = 0;
