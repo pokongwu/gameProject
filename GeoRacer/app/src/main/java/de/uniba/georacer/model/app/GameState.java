@@ -28,6 +28,7 @@ public class GameState {
 
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
+        roundCounter = currentRound;
     }
 
     public Location getStart() {

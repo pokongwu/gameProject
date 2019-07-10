@@ -51,6 +51,10 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         return binder;
     }
 
+    public void resetState() {
+        gameStateManager.reset();
+    }
+
     public class LocalBinder extends Binder {
         public GameService getService() {
             return GameService.this;
@@ -164,7 +168,7 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     @Override
     public void triggerGameFinish(GameState gameState) {
         Intent openFinishActivity = new Intent(this, GameFinishActivity.class);
-
+        openFinishActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //TODO remove mapview from stack
         startActivity(openFinishActivity);
     }

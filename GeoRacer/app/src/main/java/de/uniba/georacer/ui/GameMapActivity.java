@@ -63,7 +63,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     @Override
     public void updatePlayerPosition(Location location) {
-        if(currentPositionMarker != null) {
+        if (currentPositionMarker != null) {
             currentPositionMarker.remove();
         }
 
@@ -85,18 +85,18 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     @Override
     public void showToast(String message) {
-        if(snackbar != null) {
+        if (snackbar != null) {
             snackbar.dismiss();
         }
 
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                    }
-                })
+            }
+        })
                 .setActionTextColor(getResources().getColor(android.R.color.holo_green_dark))
                 .show();
 
@@ -105,7 +105,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
     @Override
     public void drawRoute(PolylineOptions route, List<LatLng> waypoints) {
         mMap.addPolyline(route);
-        for(LatLng waypoint : waypoints) {
+        for (LatLng waypoint : waypoints) {
             mMap.addCircle(new CircleOptions()
                     .center(waypoint).radius(50).strokeColor(getColor(R.color.waypointStroke)));
         }
@@ -113,7 +113,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     @Override
     public void drawLandmarks(List<MarkerOptions> markers) {
-        if(currentVisibleLandmarks.size() == 0) {
+        if (currentVisibleLandmarks.size() == 0) {
             for (MarkerOptions marker : markers) {
                 Marker landmark = mMap.addMarker(marker);
                 currentVisibleLandmarks.add(landmark);
@@ -160,7 +160,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
     }
 
     private void hideAppBar() {
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
     }
@@ -178,15 +178,14 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         this.finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        gameService.resetState();
+        backToMenu(findViewById(android.R.id.content));
+    }
 
     /**
      * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -211,12 +210,12 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             mMap.addMarker(destinationPosMarker);
             Intent intent = getIntent();
 
-            gameService.startRoutingToDestination(destination, intent.getIntExtra("rounds",3));
+            gameService.startRoutingToDestination(destination, intent.getIntExtra("rounds", 3));
             mMap.setOnMapClickListener(null);
         });
 
         mMap.setOnMarkerClickListener(marker -> {
-            if(isLandmark(marker)) {
+            if (isLandmark(marker)) {
                 new GuessDistanceDialog().showDialog(context, marker, gameService);
             }
 

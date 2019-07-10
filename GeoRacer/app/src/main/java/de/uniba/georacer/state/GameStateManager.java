@@ -34,7 +34,7 @@ public class GameStateManager {
     }
 
     public Location getDestination() {
-        if(gameState.getDestination() == null) {
+        if (gameState.getDestination() == null) {
             return null;
         }
 
@@ -55,7 +55,7 @@ public class GameStateManager {
 
     public Location getCurrentWaypoint() {
         LatLng waypointLatLng = gameState.getCurrentWaypoint();
-        if(waypointLatLng == null) {
+        if (waypointLatLng == null) {
             return null;
         }
 
@@ -73,8 +73,8 @@ public class GameStateManager {
     public void saveGuess(String landmarkId, Double guess) {
         gameState.saveGuess(landmarkId, guess);
 
-        if(gameState.isRoundFinished()) {
-            if(gameState.isGameFinished()) {
+        if (gameState.isRoundFinished()) {
+            if (gameState.isGameFinished()) {
                 gameStateListener.triggerGameFinish(gameState);
             } else {
                 gameState.startNewRound();
@@ -85,5 +85,9 @@ public class GameStateManager {
 
     public void setNumberOfRounds(int rounds) {
         gameState.setNumberOfRounds(rounds);
+    }
+
+    public void reset() {
+        gameState.setCurrentRound(0);
     }
 }
