@@ -14,7 +14,7 @@ import android.widget.Toast;
 import de.uniba.georacer.R;
 import de.uniba.georacer.service.http.route.WaypointExtractor;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
     private int rounds = 3;
 
@@ -47,11 +47,8 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void startGame(View view) {
-        Intent intent = new Intent(this, GameMapView.class);
+        Intent intent = new Intent(this, GameMapActivity.class);
         intent.putExtra("rounds", rounds);
         startActivity(intent);
-
     }
-
-
 }
