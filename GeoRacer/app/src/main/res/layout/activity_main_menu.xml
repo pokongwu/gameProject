@@ -28,7 +28,7 @@
         tools:layout_editor_absoluteY="46dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/startGameBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="startGame"
@@ -39,27 +39,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-<!--
-    <EditText
-        android:id="@+id/numberOfRounds"
-        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="108dp"
-        android:ems="10"
-        android:hint="@string/default_rounds"
-        android:inputType="number"
-        android:singleLine="true"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
+        android:layout_marginBottom="16dp"
+        android:text="@string/select_rounds"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        android:importantForAutofill="no" />
--->
+        app:layout_constraintTop_toBottomOf="@id/startGameBtn"/>
+
     <NumberPicker
         android:id="@+id/roundPicker"
         android:layout_width="wrap_content"
@@ -68,22 +61,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/select_rounds"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        />
 
 </android.support.constraint.ConstraintLayout>
