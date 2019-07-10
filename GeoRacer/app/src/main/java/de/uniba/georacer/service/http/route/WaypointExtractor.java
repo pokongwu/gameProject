@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
 
 //TODO error handling eg. to few points
 public class WaypointExtractor {
-    private static final int NUMBER_OF_ROUNDS = 3; //TODO get from sharedPrefs (option menu)
+    private static int NUMBER_OF_ROUNDS = 3; //TODO get from sharedPrefs (option menu)
 
-    public List<LatLng> getWaypoints(PolylineOptions route) {
+    public List<LatLng> getWaypoints(PolylineOptions route, int rounds) {
+        NUMBER_OF_ROUNDS = rounds;
         List<Location> routeLocations = route.getPoints().stream().map(this::mapLatLngToLocation)
                 .collect(Collectors.toList());
 

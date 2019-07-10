@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameState {
+    public static int NUMBER_OF_ROUNDS = 3;
     private static int roundCounter = 0;
 
     private int currentRound;
@@ -59,7 +60,7 @@ public class GameState {
     }
 
     public LatLng getCurrentWaypoint() {
-        if(this.waypoints == null) {
+        if (this.waypoints == null) {
             return null;
         }
 
@@ -82,7 +83,7 @@ public class GameState {
     }
 
     public boolean isGameFinished() {
-        final int NUMBER_OF_ROUNDS = 3;
+        final int NUMBER_OF_ROUNDS = GameState.NUMBER_OF_ROUNDS;
         return roundCounter >= NUMBER_OF_ROUNDS;
     }
 
@@ -91,5 +92,9 @@ public class GameState {
         roundCounter++;
         currentRound = roundCounter;
         roundStates.add(new RoundState(roundCounter));
+    }
+
+    public void setNumberOfRounds(int rounds) {
+        this.NUMBER_OF_ROUNDS = rounds;
     }
 }

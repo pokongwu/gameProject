@@ -16,9 +16,11 @@ import java.net.URL;
 
 public class RouteService extends AsyncTask {
     private final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
+    private final int rounds;
 
-    public RouteService(OnRouteServiceFinishedListener onRouteServiceFinishedListener) {
+    public RouteService(OnRouteServiceFinishedListener onRouteServiceFinishedListener, int rounds) {
         this.onRouteServiceFinishedListener = onRouteServiceFinishedListener;
+        this.rounds = rounds;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class RouteService extends AsyncTask {
     protected void onPostExecute(Object result) {
         super.onPostExecute(result);
 
-        RouteParserTask parserTask = new RouteParserTask(onRouteServiceFinishedListener);
+        RouteParserTask parserTask = new RouteParserTask(onRouteServiceFinishedListener,rounds);
         parserTask.execute((String) result);
     }
 

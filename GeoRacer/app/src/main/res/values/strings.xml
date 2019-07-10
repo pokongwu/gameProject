@@ -7,4 +7,6 @@
 
     <string name="my_position_title">You are here</string>
     <string name="my_destination_title">Your destination</string>
+    <string name="select_rounds">Choose number of rounds:</string>
+    <string name="default_rounds">2</string>
 </resources>

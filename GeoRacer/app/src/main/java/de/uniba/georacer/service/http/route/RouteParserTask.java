@@ -18,9 +18,11 @@ import java.util.List;
 
 public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
     final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
+    private final int rounds;
 
-    public RouteParserTask(OnRouteServiceFinishedListener onRouteServiceFinishedListener) {
+    public RouteParserTask(OnRouteServiceFinishedListener onRouteServiceFinishedListener, int rounds) {
         this.onRouteServiceFinishedListener = onRouteServiceFinishedListener;
+        this.rounds = rounds;
     }
 
     // Parsing the data in non-ui thread
@@ -69,7 +71,7 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
 
         }
 
-        List<LatLng> waypoints = new WaypointExtractor().getWaypoints(route);
+        List<LatLng> waypoints = new WaypointExtractor().getWaypoints(route, rounds);
 
         onRouteServiceFinishedListener.onRouteServiceFinished(route, waypoints);
     }
