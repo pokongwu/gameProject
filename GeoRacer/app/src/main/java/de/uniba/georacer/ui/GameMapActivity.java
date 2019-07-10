@@ -10,7 +10,9 @@ import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -32,7 +35,7 @@ import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
 import de.uniba.georacer.R;
 
 
-public class GameMapView extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
+public class GameMapActivity extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
     protected GameService gameService;
     protected boolean gameServiceBound;
     private GoogleMap mMap;
@@ -49,7 +52,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
             GameService.LocalBinder binder = (GameService.LocalBinder) service;
             gameService = binder.getService();
             gameServiceBound = true;
-            gameService.registerListener(GameMapView.this);
+            gameService.registerListener(GameMapActivity.this);
         }
 
         @Override
@@ -115,7 +118,22 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
                 Marker landmark = mMap.addMarker(marker);
                 currentVisibleLandmarks.add(landmark);
             }
+            zoomOutOnLandmarks();
         }
+    }
+
+    private void zoomOutOnLandmarks() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : currentVisibleLandmarks) {
+            builder.include(marker.getPosition());
+        }
+        builder.include(currentPositionMarker.getPosition());
+        LatLngBounds bounds = builder.build();
+
+        int padding = 250;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        mMap.animateCamera(cu);
     }
 
     @Override
@@ -127,6 +145,7 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideAppBar();
         setContentView(R.layout.game_map_view);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -138,6 +157,12 @@ public class GameMapView extends AppCompatActivity implements GameServiceListene
         // Bind to service
         Intent serviceIntent = new Intent(this, GameService.class);
         bindService(serviceIntent, gameServiceCon, Context.BIND_AUTO_CREATE);
+    }
+
+    private void hideAppBar() {
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
     }
 
     @Override

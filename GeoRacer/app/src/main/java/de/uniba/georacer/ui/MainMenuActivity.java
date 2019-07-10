@@ -10,7 +10,7 @@ import android.view.View;
 
 import de.uniba.georacer.R;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
 
     @Override
@@ -26,7 +26,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void startGame(View view) {
-        Intent intent = new Intent(this, GameMapView.class);
+        Intent intent = new Intent(this, GameMapActivity.class);
         startActivity(intent);
 
     }

@@ -9,12 +9,16 @@ import java.util.List;
 import de.uniba.georacer.model.app.GameState;
 
 public class GameStateManager {
-    private final GameState gameState;
+    private static GameState gameState;
     private final GameStateListener gameStateListener;
 
     public GameStateManager(GameStateListener gameStateListener) {
         this.gameState = new GameState();
         this.gameStateListener = gameStateListener;
+    }
+
+    public static GameState getGameState() {
+        return gameState;
     }
 
     public boolean isStartPositionSet() {
@@ -71,7 +75,7 @@ public class GameStateManager {
 
         if(gameState.isRoundFinished()) {
             if(gameState.isGameFinished()) {
-                //TODO trigger show finish screen
+                gameStateListener.triggerGameFinish(gameState);
             } else {
                 gameState.startNewRound();
                 gameStateListener.triggertNextRound(gameState.getCurrentRound());

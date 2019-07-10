@@ -18,17 +18,20 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.georacer.model.app.GameState;
 import de.uniba.georacer.service.http.route.OnRouteServiceFinishedListener;
 import de.uniba.georacer.service.http.route.RouteService;
 import de.uniba.georacer.service.http.route.RouteURLs;
 import de.uniba.georacer.state.GameStateListener;
 import de.uniba.georacer.state.GameStateManager;
+import de.uniba.georacer.ui.GameFinishActivity;
 
-public class GameService extends Service implements OnRouteServiceFinishedListener, GameStateListener {
+public class GameService extends Service implements OnRouteServiceFinishedListener, GameStateListener, LocationListener {
     private GameStateManager gameStateManager;
     private LandmarkProvider landmarkProvider;
     private final IBinder binder = new LocalBinder();
     private final List<GameServiceListener> listeners = new ArrayList<GameServiceListener>();
+    private Location lastKnownLocation;
 
 
     // ===== Service Methods =====
@@ -48,15 +51,11 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         return binder;
     }
 
-    // ===== Local Binder =====
-
     public class LocalBinder extends Binder {
         public GameService getService() {
             return GameService.this;
         }
     }
-
-    // ===== Game Service Listener Methods =====
 
     public void registerListener(GameServiceListener listener) {
         listeners.add(listener);
@@ -66,74 +65,60 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         listeners.remove(listener);
     }
 
-
-    // ===== Event Handling =====
     private void initLocationServices() throws SecurityException {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                System.out.println("on location changed..");
+        LocationListener locationListener = this;
 
-                // TODO init on another place or should user define the start location?
-                if (!gameStateManager.isStartPositionSet()) {
-                    gameStateManager.setStart(location);
-                }
-
-
-                // Alert Listeners about changed player position
-                for (GameServiceListener listener : listeners) {
-                    listener.updatePlayerPosition(location);
-                    if (gameStateManager.getDestination() == null) {
-                        listener.showToast("Tap on the map in order to set the destination");
-                    } else {
-                        listener.showToast("Current destination is " + gameStateManager.getDestination().getLatitude() + ", " + gameStateManager.getDestination().getLongitude());
-                    }
-                }
-
-                if(isUserNextToTheWaypoint(location)) {
-                    retrieveRandomLandmarks();
-                }
-            }
-
-            private boolean isUserNextToTheWaypoint(Location loacation) {
-                Location currentWaypoint = gameStateManager.getCurrentWaypoint();
-                if(currentWaypoint == null) {
-                    return false;
-                }
-
-                return currentWaypoint.distanceTo(loacation) <= 45;
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-
-        // TODO: Consider calling
-        //    ActivityCompat#requestPermissions
-        // here to request the missing permissions, and then overriding
-        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-        //                                          int[] grantResults)
-        // to handle the case where the user grants the permission. See the documentation
-        // for ActivityCompat#requestPermissions for more details.
-        //    return;
-        //}
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lastKnownLocation = location;
+
+        // TODO init on another place or should user define the start location?
+        if (!gameStateManager.isStartPositionSet()) {
+            gameStateManager.setStart(location);
+        }
+
+
+        // Alert Listeners about changed player position
+        for (GameServiceListener listener : listeners) {
+            listener.updatePlayerPosition(location);
+            if (gameStateManager.getDestination() == null) {
+                listener.showToast("Tap on the map in order to set the destination");
+            } else {
+                listener.showToast("Current destination is " + gameStateManager.getDestination().getLatitude() + ", " + gameStateManager.getDestination().getLongitude());
+            }
+        }
+
+        if(isUserNextToTheWaypoint(location)) {
+            retrieveRandomLandmarks();
+        }
+    }
+
+    private boolean isUserNextToTheWaypoint(Location loacation) {
+        Location currentWaypoint = gameStateManager.getCurrentWaypoint();
+        if(currentWaypoint == null) {
+            return false;
+        }
+
+        return currentWaypoint.distanceTo(loacation) <= 45;
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     public void startRoutingToDestination(Location destination) {
@@ -161,6 +146,10 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         for (GameServiceListener listener : listeners) {
             listener.drawRoute(route, waypoints);
         }
+
+        if(isUserNextToTheWaypoint(lastKnownLocation)) {
+            retrieveRandomLandmarks();
+        }
     }
 
     @Override
@@ -169,6 +158,14 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
             listener.showToast("Please walk to the next waypoint.");
             listener.clearLandmarks();
         }
+    }
+
+    @Override
+    public void triggerGameFinish(GameState gameState) {
+        Intent openFinishActivity = new Intent(this, GameFinishActivity.class);
+
+        //TODO remove mapview from stack
+        startActivity(openFinishActivity);
     }
 
     public void retrieveRandomLandmarks() {
