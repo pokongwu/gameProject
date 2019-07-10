@@ -209,8 +209,9 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
                     .title(getString(R.string.my_destination_title))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination));
             mMap.addMarker(destinationPosMarker);
+            Intent intent = getIntent();
 
-            gameService.startRoutingToDestination(destination);
+            gameService.startRoutingToDestination(destination, intent.getIntExtra("rounds",3));
             mMap.setOnMapClickListener(null);
         });
 

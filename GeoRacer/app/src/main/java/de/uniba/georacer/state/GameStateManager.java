@@ -82,4 +82,8 @@ public class GameStateManager {
             }
         }
     }
+
+    public void setNumberOfRounds(int rounds) {
+        gameState.setNumberOfRounds(rounds);
+    }
 }

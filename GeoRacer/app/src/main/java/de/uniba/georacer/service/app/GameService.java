@@ -121,11 +121,12 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
     }
 
-    public void startRoutingToDestination(Location destination) {
+    public void startRoutingToDestination(Location destination, int rounds) {
         gameStateManager.setDestination(destination);
+        gameStateManager.setNumberOfRounds(rounds);
 
         if (gameStateManager.isStartPositionSet()) {
-            RouteService routeService = new RouteService(this);
+            RouteService routeService = new RouteService(this,rounds);
             String routeUrl = RouteURLs.getRouteUrl(gameStateManager.getStartPosition(), gameStateManager.getDestination(), getApplicationContext());
             routeService.execute(routeUrl);
         } else {
