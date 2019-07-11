@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import de.uniba.georacer.model.app.GameState;
+import de.uniba.georacer.model.json.Landmark;
 
 public class GameStateManager {
     private static GameState gameState;
@@ -89,5 +90,9 @@ public class GameStateManager {
 
     public void reset() {
         gameState.setCurrentRound(0);
+    }
+
+    public void setLandmarks(List<Landmark> landmarks) {
+        gameState.setLandmarks(landmarks);
     }
 }

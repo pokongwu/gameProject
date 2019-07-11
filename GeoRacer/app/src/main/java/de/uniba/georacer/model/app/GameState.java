@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uniba.georacer.model.json.Landmark;
+
 public class GameState {
     public static int NUMBER_OF_ROUNDS = 3;
     private static int roundCounter = 0;
@@ -16,6 +18,7 @@ public class GameState {
     private Location destination;
     private List<RoundState> roundStates;
     private List<LatLng> waypoints;
+    private List<Landmark> landmarks;
 
     public GameState() {
         roundStates = new ArrayList<>();
@@ -57,6 +60,9 @@ public class GameState {
     }
 
     public void setWaypoints(List<LatLng> waypoints) {
+        for (int i = 0; i < roundStates.size(); i++) {
+            roundStates.get(i).setWaypoint(waypoints.get(i));
+        }
         this.waypoints = waypoints;
     }
 
@@ -97,5 +103,13 @@ public class GameState {
 
     public void setNumberOfRounds(int rounds) {
         this.NUMBER_OF_ROUNDS = rounds;
+    }
+
+    public void setLandmarks(List<Landmark> landmarks) {
+        this.landmarks = landmarks;
+    }
+
+    public List<Landmark> getLandmarks() {
+        return landmarks;
     }
 }

@@ -47,6 +47,7 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     public IBinder onBind(Intent intent) {
         gameStateManager = new GameStateManager(this);
         landmarkProvider = new LandmarkProvider(getApplicationContext());
+        gameStateManager.setLandmarks(landmarkProvider.getLandmarks());
         initLocationServices();
         return binder;
     }
