@@ -16,7 +16,7 @@ import de.uniba.georacer.service.http.route.WaypointExtractor;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    private int rounds = 3;
+    private int rounds = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private void setupNumberPicker() {
         NumberPicker numberPicker = findViewById(R.id.roundPicker);
         if (numberPicker != null) {
-            numberPicker.setValue(3);
-            numberPicker.setMinValue(3);
+            numberPicker.setValue(1);
+            numberPicker.setMinValue(1);
             numberPicker.setMaxValue(10);
             numberPicker.setWrapSelectorWheel(true);
             numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {

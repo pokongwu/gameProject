@@ -7,8 +7,8 @@ import android.widget.EditText;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
-import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.R;
+import de.uniba.georacer.service.app.GameService;
 
 public class ValidatorClickListener implements View.OnClickListener {
     private final Dialog parentDialog;
@@ -28,8 +28,10 @@ public class ValidatorClickListener implements View.OnClickListener {
         try {
             double guess = parseInput(userInput.getText().toString());
             //TODO use different landmarkId
-            this.marker.setIcon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            if (this.marker.isVisible()) {
+                this.marker.setIcon(
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            }
             gameService.saveGuess(marker.getTitle(), guess);
             parentDialog.dismiss();
         } catch (NumberFormatException numberFormatException) {

@@ -18,7 +18,7 @@ public interface PositioningHelperI {
      * @param startingPosition starting position for calculations, use a sensible location (a landmark or Bamberg city center)
      * @return Approximation of the GeoLocation based on the guesses and known landmark locations
      */
-    GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition);
+    GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) throws DegradedMatrixException;
 
     double[][] calculateDesignMatrix(Map<GeoLocation, Double> guessesNoOffset, GeoLocation startingPosition);
 }

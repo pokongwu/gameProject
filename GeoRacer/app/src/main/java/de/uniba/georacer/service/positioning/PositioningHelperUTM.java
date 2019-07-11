@@ -1,5 +1,6 @@
 package de.uniba.georacer.service.positioning;
 
+import org.ejml.data.SingularMatrixException;
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.Comparator;
@@ -10,34 +11,40 @@ import de.uniba.georacer.model.json.GeoLocation;
 
 
 public class PositioningHelperUTM extends PositioningHelper implements PositioningHelperI {
-    public static final double THRESHOLD = 0.000000001;
+    public static final double THRESHOLD = 0.01;
     private static final int MAXTRIES = 100;
     public static final Logger LOGGER = Logger.getLogger("PositioningHelperUTM");
 
-    public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+    public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) throws DegradedMatrixException {
+        LOGGER.info("Starting calculation from " + guesses.keySet().size() + " guesses and starting position: " + startingPosition.getLatitude() + " " + startingPosition.getLongitude());
+
         GeoLocation utmResult = GeoLocation.fromWGS84(startingPosition.getLatitude(), startingPosition.getLongitude());
 
         double vectorLength = 100;
         int counter = 0;
-        while (vectorLength > THRESHOLD || counter >= MAXTRIES) {
-            counter++;
+        try {
+            while (vectorLength > THRESHOLD || counter <= MAXTRIES) {
+                counter++;
 
-            // 1. Residuals
-            double[][] residuals = getResiduals(guesses, utmResult);
+                // 1. Residuals
+                double[][] residuals = getResiduals(guesses, utmResult);
 
-            // 2. Design Matrix
-            double[][] designMatrixArray = calculateDesignMatrix(guesses, utmResult);
+                // 2. Design Matrix
+                double[][] designMatrixArray = calculateDesignMatrix(guesses, utmResult);
 
-            // 3. Correction Vector
-            SimpleMatrix correctionVector = calculateCorrectionVector(residuals, designMatrixArray);
-            vectorLength = Math.sqrt(Math.pow(correctionVector.get(0, 0), 2) + Math.pow(correctionVector.get(1, 0), 2));
+                // 3. Correction Vector
+                SimpleMatrix correctionVector = calculateCorrectionVector(residuals, designMatrixArray);
+                vectorLength = Math.sqrt(Math.pow(correctionVector.get(0, 0), 2) + Math.pow(correctionVector.get(1, 0), 2));
 
-            // 4. Repeat until sufficient precision reached
-            UTM utm = new UTM(32, 'U', utmResult.getEastling() + correctionVector.get(0, 0), utmResult.getNorthling() + correctionVector.get(1, 0));
-            utmResult = GeoLocation.fromUTM(utm.getEasting(), utm.getNorthing());
+                // 4. Repeat until sufficient precision reached
+                UTM utm = new UTM(32, 'U', utmResult.getEastling() + correctionVector.get(0, 0), utmResult.getNorthling() + correctionVector.get(1, 0));
+                utmResult = GeoLocation.fromUTM(utm.getEasting(), utm.getNorthing());
 
-            LOGGER.info("lat " + utmResult.getLatitude() + " long " + utmResult.getLongitude());
+                LOGGER.info("lat " + utmResult.getLatitude() + " long " + utmResult.getLongitude());
 
+            }
+        } catch (SingularMatrixException e) {
+            throw new DegradedMatrixException(e.getLocalizedMessage());
         }
         LOGGER.info("Threshold reached after " + counter + " iterations.");
 

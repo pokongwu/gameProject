@@ -13,5 +13,6 @@
     <string name="default_rounds">2</string>
 
 
-    <string name="finish_header">Congratulations you have finished the game!</string>
+    <string name="finish_header">Congratulations you have finished the game! Your total deviation is:</string>
+    <string name="finish_hint">Try and reach 0!</string>
 </resources>

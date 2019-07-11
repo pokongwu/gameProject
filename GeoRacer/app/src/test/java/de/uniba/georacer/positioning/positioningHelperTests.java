@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.uniba.georacer.model.json.GeoLocation;
+import de.uniba.georacer.service.positioning.DegradedMatrixException;
 import de.uniba.georacer.service.positioning.PositioningHelperI;
 import de.uniba.georacer.service.positioning.PositioningHelperSimple;
 import de.uniba.georacer.service.positioning.PositioningHelperUTM;
@@ -91,21 +92,21 @@ public class positioningHelperTests {
 
 
     @Test
-    public void integrationNoOffset() {
+    public void integrationNoOffset() throws DegradedMatrixException {
         GeoLocation result = helperSimple.calculatePositionFromGuesses(guessesSimple, startingPosition);
         assertEquals(31.99265, result.getLongitude(), 0.00001);
         assertEquals(-33.17731, result.getLatitude(), 0.00001);
     }
 
     @Test
-    public void integrationWithOffset() {
+    public void integrationWithOffset() throws DegradedMatrixException {
         GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49.89, 10.88));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);
     }
 
     @Test
-    public void integrationWithOffset2() {
+    public void integrationWithOffset2() throws DegradedMatrixException {
         GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal2, GeoLocation.fromWGS84(49.9, 10.0));
         assertEquals(10.885722, result.getLongitude(), 0.001);
         assertEquals(49.893774, result.getLatitude(), 0.001);
@@ -113,14 +114,14 @@ public class positioningHelperTests {
 
 
     @Test
-    public void integrationWithOffsetZero() {
+    public void integrationWithOffsetZero() throws DegradedMatrixException {
         GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49, 10));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);
     }
 
     @Test
-    public void integrationWithOffsetSlightlyWorseStart() {
+    public void integrationWithOffsetSlightlyWorseStart() throws DegradedMatrixException {
         GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49.7, 10.8));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);

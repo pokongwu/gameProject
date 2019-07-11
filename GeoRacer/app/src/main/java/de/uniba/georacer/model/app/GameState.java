@@ -25,6 +25,10 @@ public class GameState {
         startNewRound();
     }
 
+    public List<LatLng> getWaypoints() {
+        return waypoints;
+    }
+
     public int getCurrentRound() {
         return currentRound;
     }
