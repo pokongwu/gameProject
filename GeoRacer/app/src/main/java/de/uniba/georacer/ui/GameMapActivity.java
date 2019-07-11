@@ -67,9 +67,11 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             currentPositionMarker.remove();
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(location.getLatitude(),
-                        location.getLongitude()), 15f));
+        if(currentVisibleLandmarks.size() == 0) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(),
+                            location.getLongitude()), 15f));
+        }
 
         //TODO write util class for converting Location <-> LatLng
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());

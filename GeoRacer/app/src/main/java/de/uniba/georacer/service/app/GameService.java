@@ -80,19 +80,11 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
 
-        // TODO init on another place or should user define the start location?
-        if (!gameStateManager.isStartPositionSet()) {
-            gameStateManager.setStart(location);
-        }
-
-
         // Alert Listeners about changed player position
         for (GameServiceListener listener : listeners) {
             listener.updatePlayerPosition(location);
             if (gameStateManager.getDestination() == null) {
                 listener.showToast("Tap on the map in order to set the destination");
-            } else {
-                listener.showToast("Current destination is " + gameStateManager.getDestination().getLatitude() + ", " + gameStateManager.getDestination().getLongitude());
             }
         }
 
@@ -126,6 +118,10 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     public void startRoutingToDestination(Location destination, int rounds) {
+        if (!gameStateManager.isStartPositionSet()) {
+            gameStateManager.setStart(lastKnownLocation);
+        }
+
         gameStateManager.setDestination(destination);
         gameStateManager.setNumberOfRounds(rounds);
 
