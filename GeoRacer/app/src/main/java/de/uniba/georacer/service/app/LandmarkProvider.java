@@ -21,6 +21,10 @@ public class LandmarkProvider {
         this.landmarks = parser.getLandmarks();
     }
 
+    public List<Landmark> getLandmarks(){
+        return landmarks;
+    }
+
     public List<MarkerOptions> getMarkerOptionsFromLandmarks() {
         final int NUMBER_OF_LANDMARKS = 4;
         return getRandomLandmarks(NUMBER_OF_LANDMARKS)

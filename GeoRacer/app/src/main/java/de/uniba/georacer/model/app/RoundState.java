@@ -24,6 +24,10 @@ public class RoundState {
         this.guesses.put(landmarkId, guess);
     }
 
+    public Map<String, Double> getGuesses(){
+        return  guesses;
+    }
+
     public boolean isRoundFinished() {
         final int NUMBER_OF_GUESSES = 4;
         return guesses.size() >= NUMBER_OF_GUESSES;
