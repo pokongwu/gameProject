@@ -120,6 +120,7 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     public void startRoutingToDestination(Location destination, int rounds) {
+
         if (!gameStateManager.isStartPositionSet()) {
             gameStateManager.setStart(lastKnownLocation);
         }

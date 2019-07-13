@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 
 import de.uniba.georacer.R;
 
+/**
+ * @author Ludwig Leuschner
+ */
+
 public class WaypointsOptionGenerator {
     private static final int WAYPOINT_RADIUS = 50;
 

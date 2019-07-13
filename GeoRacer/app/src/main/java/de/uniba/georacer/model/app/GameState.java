@@ -10,9 +10,9 @@ import java.util.List;
 import de.uniba.georacer.model.json.Landmark;
 
 public class GameState {
-    public static int NUMBER_OF_ROUNDS = 3;
     private static int roundCounter = 0;
 
+    private int numberOfRounds;
     private int currentRound;
     private Location start;
     private Location destination;
@@ -94,8 +94,7 @@ public class GameState {
     }
 
     public boolean isGameFinished() {
-        final int NUMBER_OF_ROUNDS = GameState.NUMBER_OF_ROUNDS;
-        return roundCounter >= NUMBER_OF_ROUNDS;
+        return roundCounter >= numberOfRounds;
     }
 
 
@@ -106,7 +105,7 @@ public class GameState {
     }
 
     public void setNumberOfRounds(int rounds) {
-        this.NUMBER_OF_ROUNDS = rounds;
+        this.numberOfRounds = rounds;
     }
 
     public void setLandmarks(List<Landmark> landmarks) {

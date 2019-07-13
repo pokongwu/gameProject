@@ -77,7 +77,7 @@
 		}
 	},
 	{
-		"name":	"Rosengarten",
+		"name":	"Rosengarten Süd",
 		"position":{
 			"latitude":49.891581,
 			"longitude":10.8847483
@@ -149,7 +149,7 @@
 		}
 	},
 	{
-		"name":	"Rosengarten",
+		"name":	"Rosengarten Nord",
 		"position":{
 			"latitude":49.892122,
 			"longitude":10.8790719
