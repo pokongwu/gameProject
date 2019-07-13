@@ -153,6 +153,7 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
         for (GameServiceListener listener : listeners) {
             listener.drawRoute(routeOptions);
             listener.drawWaypoints(waypointOptions);
+            listener.showToast("Please walk to the next waypoint.");
         }
 
         if(isUserNextToTheWaypoint(lastKnownLocation)) {

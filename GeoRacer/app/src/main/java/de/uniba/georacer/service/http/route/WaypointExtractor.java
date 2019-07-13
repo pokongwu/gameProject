@@ -16,38 +16,37 @@ import java.util.stream.Collectors;
 
 //TODO error handling eg. to few points
 public class WaypointExtractor {
-    private static int NUMBER_OF_ROUNDS = 3; //TODO get from sharedPrefs (option menu)
-
     public List<LatLng> getWaypoints(PolylineOptions route, int rounds) {
-        NUMBER_OF_ROUNDS = rounds;
         List<Location> routeLocations = route.getPoints().stream().map(this::mapLatLngToLocation)
                 .collect(Collectors.toList());
 
-        return extractWaypoints(routeLocations);
+        return extractWaypoints(routeLocations, rounds);
     }
 
-    private List<LatLng> extractWaypoints(List<Location> routeLocations) {
+    private List<LatLng> extractWaypoints(List<Location> routeLocations, int rounds) {
         double totalDistance = getTotalDistanceFromRoute(routeLocations);
-        double waypointDistance = totalDistance / NUMBER_OF_ROUNDS - 1;
+        double waypointDistance = totalDistance / rounds - 1;
         double curDistance = 0;
         Location lastPoint = new Location("");
         lastPoint.setLatitude(routeLocations.get(0).getLatitude());
         lastPoint.setLongitude(routeLocations.get(0).getLongitude());
 
         List<LatLng> waypoints = new ArrayList<>();
-        waypoints.add(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()));
+        if(rounds > 1) {
+            waypoints.add(new LatLng(lastPoint.getLatitude(), lastPoint.getLongitude()));
 
-        for (Location curLocation : routeLocations) {
-            curDistance += lastPoint.distanceTo(curLocation);
-            if(curDistance >= waypointDistance) {
-                waypoints.add(new LatLng(curLocation.getLatitude(), curLocation.getLongitude()));
-                curDistance = 0;
-
-                if(waypoints.size() == NUMBER_OF_ROUNDS - 1) {
+            for (Location curLocation : routeLocations) {
+                if (waypoints.size() == rounds - 1) {
                     break;
                 }
+
+                curDistance += lastPoint.distanceTo(curLocation);
+                if (curDistance >= waypointDistance) {
+                    waypoints.add(new LatLng(curLocation.getLatitude(), curLocation.getLongitude()));
+                    curDistance = 0;
+                }
+                lastPoint = curLocation;
             }
-            lastPoint = curLocation;
         }
 
         Location lastLocation = routeLocations.get(routeLocations.size() - 1);

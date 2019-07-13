@@ -17,7 +17,7 @@ import de.uniba.georacer.model.app.Result;
 
 /**
  * initial source: https://www.journaldev.com/10416/android-listview-with-custom-adapter-example-tutorial
- * @author Ludwig Leuschner 
+ * @author Ludwig Leuschner
  */
 
 public class CustomAdapter extends ArrayAdapter<Result>{
