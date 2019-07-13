@@ -68,6 +68,10 @@ public class GameState {
         return this.waypoints.get(currentRound - 1);
     }
 
+    public List<LatLng> getWaypoints() {
+        return this.waypoints;
+    }
+
     public String getGuess(String landmarkId) {
         RoundState curRoundState = getCurrentRoundState();
         return curRoundState.getGuess(landmarkId);

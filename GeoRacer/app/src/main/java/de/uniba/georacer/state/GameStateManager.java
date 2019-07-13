@@ -21,6 +21,10 @@ public class GameStateManager {
         return gameState;
     }
 
+    public int getCurrentRound() {
+        return gameState.getCurrentRound();
+    }
+
     public boolean isStartPositionSet() {
         return gameState.getStart() != null;
     }
@@ -64,6 +68,10 @@ public class GameStateManager {
         waypoint.setLongitude(waypointLatLng.longitude);
 
         return waypoint;
+    }
+
+    public List<LatLng> getWaypoints() {
+        return gameState.getWaypoints();
     }
 
     public String getGuess(String landmarkId) {

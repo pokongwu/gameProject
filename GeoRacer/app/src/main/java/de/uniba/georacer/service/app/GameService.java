@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -135,17 +136,21 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     @Override
-    public void onRouteServiceFinished(PolylineOptions route, List<LatLng> waypoints) {
-        if(route == null) {
+    public void onRouteServiceFinished(PolylineOptions routeOptions, List<LatLng> waypoints) {
+        if(routeOptions == null) {
             for (GameServiceListener listener : listeners) {
                 listener.showToast("Can't find a suitable route, please pick a new destination.");
             }
         }
 
         gameStateManager.setWaypoints(waypoints);
+        List<CircleOptions> waypointOptions =
+                new WaypointsOptionGenerator(this, waypoints, gameStateManager.getCurrentRound())
+                        .getWaypointOptions();
 
         for (GameServiceListener listener : listeners) {
-            listener.drawRoute(route, waypoints);
+            listener.drawRoute(routeOptions);
+            listener.drawWaypoints(waypointOptions);
         }
 
         if(isUserNextToTheWaypoint(lastKnownLocation)) {
@@ -155,9 +160,14 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
     @Override
     public void triggertNextRound(int currentRound) {
+        List<CircleOptions> waypointOptions =
+                new WaypointsOptionGenerator(this, gameStateManager.getWaypoints(), gameStateManager.getCurrentRound())
+                        .getWaypointOptions();
+
         for (GameServiceListener listener : listeners) {
             listener.showToast("Please walk to the next waypoint.");
             listener.clearLandmarks();
+            listener.drawWaypoints(waypointOptions);
         }
     }
 
