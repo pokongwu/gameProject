@@ -3,7 +3,6 @@ package de.uniba.georacer.service.positioning;
 import org.ejml.data.SingularMatrixException;
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -23,7 +22,7 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
         double vectorLength = 100;
         int counter = 0;
         try {
-            while (vectorLength > THRESHOLD || counter <= MAXTRIES) {
+            while (vectorLength > THRESHOLD && counter <= MAXTRIES) {
                 counter++;
 
                 // 1. Residuals
@@ -40,7 +39,7 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
                 UTM utm = new UTM(32, 'U', utmResult.getEastling() + correctionVector.get(0, 0), utmResult.getNorthling() + correctionVector.get(1, 0));
                 utmResult = GeoLocation.fromUTM(utm.getEasting(), utm.getNorthing());
 
-                LOGGER.info("lat " + utmResult.getLatitude() + " long " + utmResult.getLongitude());
+                LOGGER.info("lat " + utmResult.getLatitude() + " long " + utmResult.getLongitude() + " vector length: " + vectorLength + " iterations: " + counter);
 
             }
         } catch (SingularMatrixException e) {
