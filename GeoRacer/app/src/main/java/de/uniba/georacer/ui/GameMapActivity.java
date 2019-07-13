@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.service.app.GameServiceListener;
@@ -119,6 +120,9 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         for(CircleOptions waypoint : waypointOptions) {
             visibleWaypoints.add(mMap.addCircle(waypoint));
         }
+
+        zoomOutOnLandmarks(visibleWaypoints.stream()
+                .map(Circle::getCenter).collect(Collectors.toList()));
     }
 
     @Override
@@ -128,19 +132,18 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
                 Marker landmark = mMap.addMarker(marker);
                 visibleLandmarks.add(landmark);
             }
-            zoomOutOnLandmarks();
+            zoomOutOnLandmarks(visibleLandmarks.stream()
+                    .map(Marker::getPosition).collect(Collectors.toList()));
         }
     }
 
-    private void zoomOutOnLandmarks() {
+    private void zoomOutOnLandmarks(List<LatLng> positions) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : visibleLandmarks) {
-            builder.include(marker.getPosition());
-        }
+        positions.forEach(builder::include);
         builder.include(currentPositionMarker.getPosition());
         LatLngBounds bounds = builder.build();
 
-        int padding = 250;
+        int padding = 400;
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
         mMap.animateCamera(cu);
