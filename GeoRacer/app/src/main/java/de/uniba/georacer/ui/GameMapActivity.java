@@ -209,6 +209,9 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
 
+        final int bottomPaddingForControlls = 180;
+        mMap.setPadding(0, 0, 0, bottomPaddingForControlls);
+
 
         mMap.setOnMapClickListener(latLng -> {
             Location destination = new Location("map tap");
