@@ -2,7 +2,7 @@ package de.uniba.georacer.service.app;
 
 import android.location.Location;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -17,9 +17,11 @@ public interface GameServiceListener {
 
     void showToast(String message);
 
-    void drawRoute(PolylineOptions route, List<LatLng> waypoints);
+    void drawRoute(PolylineOptions routeOption);
 
-    void drawLandmarks(List<MarkerOptions> markers);
+    void drawWaypoints(List<CircleOptions> waypointOptions);
+
+    void drawLandmarks(List<MarkerOptions> landmarkOptions);
 
     void clearLandmarks();
 }

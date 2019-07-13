@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.service.app.GameServiceListener;
@@ -41,14 +42,16 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
     private GoogleMap mMap;
     private Snackbar snackbar;
     private Marker currentPositionMarker;
-    List<Marker> currentVisibleLandmarks;
+    List<Marker> visibleLandmarks;
+    List<Circle> visibleWaypoints;
     // ===== Game Service Connection =====
 
     private ServiceConnection gameServiceCon = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            currentVisibleLandmarks = new ArrayList<>();
+            visibleLandmarks = new ArrayList<>();
+            visibleWaypoints = new ArrayList<>();
             GameService.LocalBinder binder = (GameService.LocalBinder) service;
             gameService = binder.getService();
             gameServiceBound = true;
@@ -67,9 +70,11 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             currentPositionMarker.remove();
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(location.getLatitude(),
-                        location.getLongitude()), 15f));
+        if(visibleLandmarks.size() == 0) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(location.getLatitude(),
+                            location.getLongitude()), 15f));
+        }
 
         //TODO write util class for converting Location <-> LatLng
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
@@ -103,34 +108,42 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
     }
 
     @Override
-    public void drawRoute(PolylineOptions route, List<LatLng> waypoints) {
-        mMap.addPolyline(route);
-        for (LatLng waypoint : waypoints) {
-            mMap.addCircle(new CircleOptions()
-                    .center(waypoint).radius(50).strokeColor(getColor(R.color.waypointStroke)));
-        }
+    public void drawRoute(PolylineOptions routeOption) {
+        mMap.addPolyline(routeOption);
     }
 
     @Override
-    public void drawLandmarks(List<MarkerOptions> markers) {
-        if (currentVisibleLandmarks.size() == 0) {
-            for (MarkerOptions marker : markers) {
+    public void drawWaypoints(List<CircleOptions> waypointOptions) {
+        visibleWaypoints.forEach(Circle::remove);
+        visibleWaypoints.clear();
+
+        for(CircleOptions waypoint : waypointOptions) {
+            visibleWaypoints.add(mMap.addCircle(waypoint));
+        }
+
+        zoomOutOnLandmarks(visibleWaypoints.stream()
+                .map(Circle::getCenter).collect(Collectors.toList()));
+    }
+
+    @Override
+    public void drawLandmarks(List<MarkerOptions> landmarkOptions) {
+        if (visibleLandmarks.size() == 0) {
+            for (MarkerOptions marker : landmarkOptions) {
                 Marker landmark = mMap.addMarker(marker);
-                currentVisibleLandmarks.add(landmark);
+                visibleLandmarks.add(landmark);
             }
-            zoomOutOnLandmarks();
+            zoomOutOnLandmarks(visibleLandmarks.stream()
+                    .map(Marker::getPosition).collect(Collectors.toList()));
         }
     }
 
-    private void zoomOutOnLandmarks() {
+    private void zoomOutOnLandmarks(List<LatLng> positions) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : currentVisibleLandmarks) {
-            builder.include(marker.getPosition());
-        }
+        positions.forEach(builder::include);
         builder.include(currentPositionMarker.getPosition());
         LatLngBounds bounds = builder.build();
 
-        int padding = 250;
+        int padding = 400;
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
         mMap.animateCamera(cu);
@@ -138,8 +151,8 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     @Override
     public void clearLandmarks() {
-        currentVisibleLandmarks.forEach(Marker::remove);
-        currentVisibleLandmarks.clear();
+        visibleLandmarks.forEach(Marker::remove);
+        visibleLandmarks.clear();
     }
 
     @Override
