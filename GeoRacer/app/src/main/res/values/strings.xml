@@ -13,7 +13,7 @@
 
     <string name="finish_header">Congratulations you have finished the game! Your total deviation is:</string>
     <string name="guessing_alert_hint">Your guess in meters</string>
-    <string name="guesses_for_round">Guesses for round</string>
+    <string name="guesses_for_round">Guesses for round </string>
     <string name="guessed_label">guessed</string>
     <string name="actual_label">actual</string>
     <string name="difference_label">difference</string>
