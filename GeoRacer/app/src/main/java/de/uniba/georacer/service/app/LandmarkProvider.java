@@ -6,8 +6,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import de.uniba.georacer.model.json.Landmark;
@@ -35,7 +38,8 @@ public class LandmarkProvider {
 
     //TODO check if landmark was already selected / remove from list
     private List<Landmark> getRandomLandmarks(int numberOfLandmarks) {
-        Collections.shuffle(landmarks);
+        Random seed = getSeed();
+        Collections.shuffle(landmarks, seed);
 
         return landmarks.subList(0, numberOfLandmarks);
     }
@@ -49,5 +53,25 @@ public class LandmarkProvider {
                 .position(latLng)
                 .title(title)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+    }
+
+    /**
+     * @return a Random-Object with the current time, except minute, as seed.
+     * If two (or more) players start the game at the same minute,
+     * they will receive the same landmarks in order to compare results
+     */
+    private Random getSeed() {
+        Calendar currentTime = GregorianCalendar.getInstance();
+        Calendar seedTime = GregorianCalendar.getInstance();
+
+        seedTime.clear();
+        seedTime.set(
+                currentTime.get(Calendar.YEAR),
+                currentTime.get(Calendar.MONTH),
+                currentTime.get(Calendar.DATE),
+                currentTime.get(Calendar.HOUR_OF_DAY),
+                currentTime.get(Calendar.MINUTE));
+
+        return new Random(seedTime.getTimeInMillis());
     }
 }
