@@ -21,8 +21,9 @@ import static org.junit.Assert.assertEquals;
 
 public class positioningHelperTests {
     Map<GeoLocation, Double> guessesSimple = new HashMap<>();
-    Map<GeoLocation, Double> guessesReal1 = new HashMap<>();
-    Map<GeoLocation, Double> guessesReal2 = new HashMap<>();
+    Map<GeoLocation, Double> closeToColinear1 = new HashMap<>();
+    Map<GeoLocation, Double> closeToColinear2 = new HashMap<>();
+    Map<GeoLocation, Double> notColinear = new HashMap<>();
     GeoLocation startingPosition = GeoLocation.fromWGS84(0, 0);
     PositioningHelperI helperSimple = new PositioningHelperSimple();
     PositioningHelperI helperUTM = new PositioningHelperUTM();
@@ -39,15 +40,20 @@ public class positioningHelperTests {
         guessesSimple.put(l3, 30.0);
         guessesSimple.put(l4, 70.0);
 
-        guessesReal1.put(GeoLocation.fromWGS84(49.8914738, 10.8865525), 200.0); // Basanese
-        guessesReal1.put(GeoLocation.fromWGS84(49.890886, 10.882925), 140.0); // Dom
-        guessesReal1.put(GeoLocation.fromWGS84(49.8925749, 10.8876731), 250.0); // Café Austraße
-        guessesReal1.put(GeoLocation.fromWGS84(49.8931644, 10.8888355), 400.0); // Grüner Markt
+        closeToColinear1.put(GeoLocation.fromWGS84(49.8914738, 10.8865525), 200.0); // Basanese
+        closeToColinear1.put(GeoLocation.fromWGS84(49.890886, 10.882925), 140.0); // Dom
+        closeToColinear1.put(GeoLocation.fromWGS84(49.8925749, 10.8876731), 250.0); // Café Austraße
+        closeToColinear1.put(GeoLocation.fromWGS84(49.8931644, 10.8888355), 400.0); // Grüner Markt
 
-        guessesReal2.put(GeoLocation.fromWGS84(49.8914738, 10.8865525), 265.0); // Basanese
-        guessesReal2.put(GeoLocation.fromWGS84(49.890886, 10.882925), 230.0); // Dom
-        guessesReal2.put(GeoLocation.fromWGS84(49.8925749, 10.8876731), 190.0); // Café Austraße
-        guessesReal2.put(GeoLocation.fromWGS84(49.8931644, 10.8888355), 250.0); // Grüner Markt
+        closeToColinear2.put(GeoLocation.fromWGS84(49.8914738, 10.8865525), 265.0); // Basanese
+        closeToColinear2.put(GeoLocation.fromWGS84(49.890886, 10.882925), 230.0); // Dom
+        closeToColinear2.put(GeoLocation.fromWGS84(49.8925749, 10.8876731), 190.0); // Café Austraße
+        closeToColinear2.put(GeoLocation.fromWGS84(49.8931644, 10.8888355), 250.0); // Grüner Markt
+
+        notColinear.put(GeoLocation.fromWGS84(49.8914738, 10.8873558), 265.0); // Basanese
+        notColinear.put(GeoLocation.fromWGS84(49.8931644, 10.8888355), 280.0); // Grüner Markt
+        notColinear.put(GeoLocation.fromWGS84(49.890886, 10.882925), 215.0); // Dom
+        notColinear.put(GeoLocation.fromWGS84(49.893774,  10.885722), 230.0); //
     }
 
     @Test
@@ -100,29 +106,43 @@ public class positioningHelperTests {
 
     @Test
     public void integrationWithOffset() throws DegradedMatrixException {
-        GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49.89, 10.88));
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(closeToColinear1, GeoLocation.fromWGS84(49.89, 10.88));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);
     }
 
     @Test
     public void integrationWithOffset2() throws DegradedMatrixException {
-        GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal2, GeoLocation.fromWGS84(49.9, 10.0));
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(closeToColinear2, GeoLocation.fromWGS84(49.9, 10.0));
         assertEquals(10.885722, result.getLongitude(), 0.001);
         assertEquals(49.893774, result.getLatitude(), 0.001);
+    }
+
+    @Test
+    public void integrationWithOffset3() throws DegradedMatrixException {
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(notColinear, GeoLocation.fromWGS84(49, 10));
+        assertEquals(10.884457, result.getLongitude(), 0.001);
+        assertEquals(49.892364, result.getLatitude(), 0.001);
+    }
+
+    @Test
+    public void integrationWithOffset3Zero() throws DegradedMatrixException {
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(notColinear, GeoLocation.fromWGS84(0, 0));
+        assertEquals(10.884457, result.getLongitude(), 0.001);
+        assertEquals(49.892364, result.getLatitude(), 0.001);
     }
 
 
     @Test
     public void integrationWithOffsetZero() throws DegradedMatrixException {
-        GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49, 10));
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(closeToColinear1, GeoLocation.fromWGS84(49, 10));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);
     }
 
     @Test
     public void integrationWithOffsetSlightlyWorseStart() throws DegradedMatrixException {
-        GeoLocation result = helperUTM.calculatePositionFromGuesses(guessesReal1, GeoLocation.fromWGS84(49.7, 10.8));
+        GeoLocation result = helperUTM.calculatePositionFromGuesses(closeToColinear1, GeoLocation.fromWGS84(49.7, 10.8));
         assertEquals(10.884, result.getLongitude(), 0.001);
         assertEquals(49.892, result.getLatitude(), 0.001);
     }
