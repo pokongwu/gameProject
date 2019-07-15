@@ -24,4 +24,6 @@ public interface GameServiceListener {
     void drawLandmarks(List<MarkerOptions> landmarkOptions);
 
     void clearLandmarks();
+
+    void closeMapView();
 }

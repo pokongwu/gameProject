@@ -22,9 +22,9 @@ public class MainMenuActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupNumberPicker();
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-
-
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
     }
 
     private void setupNumberPicker() {
@@ -34,12 +34,7 @@ public class MainMenuActivity extends AppCompatActivity {
             numberPicker.setMinValue(1);
             numberPicker.setMaxValue(10);
             numberPicker.setWrapSelectorWheel(true);
-            numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    rounds = newVal;
-                }
-            });
+            numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> rounds = newVal);
         }
     }
 

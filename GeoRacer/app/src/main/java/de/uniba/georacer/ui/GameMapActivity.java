@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -77,7 +78,6 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         MarkerOptions currentPosMarkerOptions = new MarkerOptions()
                 .position(currentPosition)
                 .title(getString(R.string.my_position_title))
-                //https://www.freeiconspng.com/img/1673
                 //https://www.iconfinder.com/icons/2908584/gps_location_marker_pin_user_icon
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
 
@@ -97,15 +97,9 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        })
-                .setActionTextColor(getResources().getColor(android.R.color.holo_green_dark))
+        snackbar.setAction("OK", view1 -> {}).
+                setActionTextColor(getResources().getColor(android.R.color.holo_green_dark))
                 .show();
-
     }
 
     @Override
@@ -136,6 +130,11 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             zoomOutOnLandmarks(visibleLandmarks.stream()
                     .map(Marker::getPosition).collect(Collectors.toList()));
         }
+    }
+
+    @Override
+    public void closeMapView() {
+        this.finish();
     }
 
     public void zoomOnPlayer(View view) {
@@ -196,6 +195,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         super.onDestroy();
 
         if (gameServiceCon != null) {
+            gameService.resetState();
             unbindService(gameServiceCon);
         }
     }

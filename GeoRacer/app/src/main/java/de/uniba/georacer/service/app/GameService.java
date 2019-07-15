@@ -39,7 +39,6 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return Service.START_NOT_STICKY;
     }
 
@@ -178,8 +177,11 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     public void triggerGameFinish(GameState gameState) {
         Intent openFinishActivity = new Intent(this, GameFinishActivity.class);
         openFinishActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //TODO remove mapview from stack
         startActivity(openFinishActivity);
+
+        for (GameServiceListener listener : listeners) {
+            listener.closeMapView();
+        }
     }
 
     public void retrieveRandomLandmarks() {
