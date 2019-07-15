@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -165,6 +166,11 @@ public class GameMapActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * For smaller devices the padding is too big, reduce the padding step wise until it fits.
+     *
+     * @param positions
+     */
     private void zoomOutOnLandmarks(List<LatLng> positions) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         positions.forEach(builder::include);
@@ -172,9 +178,20 @@ public class GameMapActivity extends AppCompatActivity
         LatLngBounds bounds = builder.build();
 
         int padding = 400;
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        boolean finallyWorksDirtyHack = false;
 
-        mMap.animateCamera(cu);
+        while(!finallyWorksDirtyHack) {
+            try {
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                mMap.animateCamera(cu);
+            } catch (Exception e) {
+                Log.w("zoom", "Exception during zoom, " +
+                        "probably due to too small screen size. Reduce padding..");
+                padding = padding / 2;
+            } finally {
+                finallyWorksDirtyHack = true;
+            }
+        }
     }
 
     @Override
