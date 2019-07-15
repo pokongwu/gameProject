@@ -36,7 +36,7 @@ public class MainMenuActivity extends AppCompatActivity {
         if (numberPicker != null) {
             numberPicker.setValue(1);
             numberPicker.setMinValue(1);
-            numberPicker.setMaxValue(10);
+            numberPicker.setMaxValue(7);
             numberPicker.setWrapSelectorWheel(true);
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> rounds = newVal);
         }
