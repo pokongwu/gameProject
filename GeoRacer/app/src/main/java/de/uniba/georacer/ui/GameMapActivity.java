@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.uniba.georacer.animations.LatLngInterpolar;
+import de.uniba.georacer.animations.MarkerAnimation;
 import de.uniba.georacer.service.app.DialogGameServiceProxy;
 import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.service.app.GameServiceListener;
@@ -69,19 +71,23 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     @Override
     public void updatePlayerPosition(Location location) {
-        if (currentPositionMarker != null) {
+        LatLng position;
+        if(currentPositionMarker == null) {
+            position = new LatLng(location.getLatitude(), location.getLongitude());
+        } else {
             currentPositionMarker.remove();
+            position = currentPositionMarker.getPosition();
         }
 
-        //TODO write util class for converting Location <-> LatLng
-        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions currentPosMarkerOptions = new MarkerOptions()
-                .position(currentPosition)
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(position)
                 .title(getString(R.string.my_position_title))
                 //https://www.iconfinder.com/icons/2908584/gps_location_marker_pin_user_icon
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
 
-        currentPositionMarker = mMap.addMarker(currentPosMarkerOptions);
+        currentPositionMarker= mMap.addMarker(markerOptions);
+        LatLng toLocation = new LatLng(location.getLatitude(), location.getLongitude()); // Whatever destination coordinates
+        MarkerAnimation.animateMarkerToICS(currentPositionMarker, toLocation, new LatLngInterpolar.Linear());
 
         if(!isInitialZoomPerformed) {
             isInitialZoomPerformed = true;
