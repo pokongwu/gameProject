@@ -23,15 +23,15 @@
   {
     "name": "Alte Hofhaltung",
     "position": {
-      "latitude": 49.891171,
-      "longitude": 10.8792314
+      "latitude": 49.891251,
+      "longitude": 10.881484
     }
   },
   {
     "name": "Neue Residenz",
     "position": {
-      "latitude": 49.891171,
-      "longitude": 10.8792314
+      "latitude": 49.891811,
+      "longitude": 10.882225
     }
   },
   {
@@ -44,8 +44,8 @@
   {
     "name": "Franconian Brewery Museum",
     "position": {
-      "latitude": 49.891171,
-      "longitude": 10.8792314
+      "latitude": 49.893735,
+      "longitude": 10.875948
     }
   },
   {
@@ -65,15 +65,15 @@
   {
     "name": "Sammlung Ludwig",
     "position": {
-      "latitude": 49.891581,
-      "longitude": 10.8847483
+      "latitude": 49.891734,
+      "longitude": 10.886781
     }
   },
   {
-    "name": "Rosengarten Süd",
+    "name": "Rosengarten",
     "position": {
-      "latitude": 49.891581,
-      "longitude": 10.8847483
+      "latitude": 49.892153,
+      "longitude": 10.881282
     }
   },
   {
@@ -130,13 +130,6 @@
     "position": {
       "latitude": 49.9018114,
       "longitude": 10.9255342
-    }
-  },
-  {
-    "name": "Rosengarten Nord",
-    "position": {
-      "latitude": 49.892122,
-      "longitude": 10.8790719
     }
   },
   {
