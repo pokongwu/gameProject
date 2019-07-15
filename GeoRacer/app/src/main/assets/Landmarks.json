@@ -1,13 +1,13 @@
 [
 	{
-		"name": "altes Rathaus",
+		"name": "Altes Rathaus",
 		"position":{
 			"latitude":49.8916433,
 			"longitude":10.8845945
 		}
 	},
 	{
-		"name": "bamberger Dom",
+		"name": "Bamberger Dom",
 		"position":{
 			"latitude":49.890778,
 			"longitude":10.8803263
@@ -29,7 +29,7 @@
 		}
 	},
 	{
-		"name": "neue Residenz",
+		"name": "Neue Residenz",
 		"position":{
 			"latitude":49.891171,
 			"longitude":10.8792314
@@ -37,7 +37,7 @@
 		}
 	},
 	{
-		"name":	"Michael monastery",
+		"name":	"Michaeliskloster",
 		"position":{
 			"latitude":49.8937065,
 			"longitude":10.874759
@@ -45,7 +45,7 @@
 		}
 	},
 	{
-		"name": "Franconian brewery museum",
+		"name": "Franconian Brewery Museum",
 		"position":{
 			"latitude":49.891171,
 			"longitude":10.8792314
@@ -61,7 +61,7 @@
 		}
 	},
 	{
-		"name":	"Naturkunde-museum",
+		"name":	"Naturkundemuseum",
 		"position":{
 			"latitude":49.8944869,
 			"longitude":10.8857823
@@ -85,7 +85,7 @@
 		}
 	},
 	{
-		"name":	"Schleuse 100 Ludwig-main-donau-kanal",
+		"name":	"Schleuse 100 Ludwig-Main-Donau-Kanal",
 		"position":{
 			"latitude":49.8879812,
 			"longitude":10.8879873
@@ -213,10 +213,10 @@
 		}
 	},
 	{
-		"name":	"Meganisi Sailing",
+		"name":	"Obere Pfarre",
 		"position":{
-			"latitude":49.8888655,
-			"longitude":10.8841466
+			"latitude":49.88929,
+			"longitude":10.884336
 			
 		}
 	},
