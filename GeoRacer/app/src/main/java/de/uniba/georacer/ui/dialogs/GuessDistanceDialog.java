@@ -12,17 +12,17 @@ import android.widget.EditText;
 import com.google.android.gms.maps.model.Marker;
 
 import de.uniba.georacer.R;
-import de.uniba.georacer.service.app.GameService;
+import de.uniba.georacer.service.app.DialogGameServiceProxy;
 
 public class GuessDistanceDialog {
-    public void showDialog(Context context, Marker marker, final GameService gameService) {
+    public void showDialog(Context context, Marker marker, DialogGameServiceProxy dialogGameServiceProxy) {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
         View mView = layoutInflaterAndroid.inflate(R.layout.guess_input_dialog, null);
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
         alertDialogBuilderUserInput.setView(mView);
         final EditText userInput = mView.findViewById(R.id.userInputDialog);
         userInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        userInput.setText(gameService.getGuess(marker.getTitle()));
+        userInput.setText(dialogGameServiceProxy.getGuess(marker.getTitle()));
 
         alertDialogBuilderUserInput
                 .setTitle(String.format("Guess the distance to %s",marker.getTitle()))
@@ -38,7 +38,7 @@ public class GuessDistanceDialog {
         alertDialog.show();
 
         Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        ValidatorClickListener validatorClickListener = new ValidatorClickListener(alertDialog, marker, gameService);
+        ValidatorClickListener validatorClickListener = new ValidatorClickListener(alertDialog, marker, dialogGameServiceProxy);
         positiveButton.setOnClickListener(validatorClickListener);
     }
 }

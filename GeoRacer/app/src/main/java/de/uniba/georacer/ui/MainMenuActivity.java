@@ -7,12 +7,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import de.uniba.georacer.R;
-import de.uniba.georacer.service.http.route.WaypointExtractor;
 
 public class MainMenuActivity extends AppCompatActivity {
 

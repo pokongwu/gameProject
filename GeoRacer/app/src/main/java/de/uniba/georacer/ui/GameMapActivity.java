@@ -30,13 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.uniba.georacer.service.app.DialogGameServiceProxy;
 import de.uniba.georacer.service.app.GameService;
 import de.uniba.georacer.service.app.GameServiceListener;
 import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
 import de.uniba.georacer.R;
 
 
-public class GameMapActivity extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
+public class GameMapActivity extends AppCompatActivity implements GameServiceListener, DialogGameServiceProxy, OnMapReadyCallback {
     protected GameService gameService;
     protected boolean gameServiceBound;
     private boolean isInitialZoomPerformed = false;
@@ -244,7 +245,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
         mMap.setOnMarkerClickListener(marker -> {
             if (isLandmark(marker)) {
-                new GuessDistanceDialog().showDialog(context, marker, gameService);
+                new GuessDistanceDialog().showDialog(context, marker, this);
             }
 
             return false;
@@ -256,4 +257,13 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
                 && !marker.getTitle().equals(getString(R.string.my_destination_title));
     }
 
+    @Override
+    public void saveGuess(String landmarkId, double guess) {
+        gameService.saveGuess(landmarkId, guess);
+    }
+
+    @Override
+    public String getGuess(String landmarkId) {
+        return gameService.getGuess(landmarkId);
+    }
 }
