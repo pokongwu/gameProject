@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="greenButton">#2b2</color>
+    <color name="positionIconBackground">#8822bb22</color>
     <color name="waypointStrokeUnvisited">#44b</color>
     <color name="waypointStrokeVisited">#2b2</color>
     <color name="roundSpinnerBackground">#99ffffff</color>

@@ -39,11 +39,12 @@ import de.uniba.georacer.R;
 public class GameMapActivity extends AppCompatActivity implements GameServiceListener, OnMapReadyCallback {
     protected GameService gameService;
     protected boolean gameServiceBound;
+    private boolean isInitialZoomPerformed = false;
     private GoogleMap mMap;
     private Snackbar snackbar;
     private Marker currentPositionMarker;
-    List<Marker> visibleLandmarks;
-    List<Circle> visibleWaypoints;
+    private List<Marker> visibleLandmarks;
+    private List<Circle> visibleWaypoints;
     // ===== Game Service Connection =====
 
     private ServiceConnection gameServiceCon = new ServiceConnection() {
@@ -70,12 +71,6 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             currentPositionMarker.remove();
         }
 
-        if(visibleLandmarks.size() == 0) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(location.getLatitude(),
-                            location.getLongitude()), 15f));
-        }
-
         //TODO write util class for converting Location <-> LatLng
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions currentPosMarkerOptions = new MarkerOptions()
@@ -86,6 +81,11 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
 
         currentPositionMarker = mMap.addMarker(currentPosMarkerOptions);
+
+        if(!isInitialZoomPerformed) {
+            isInitialZoomPerformed = true;
+            zoomOnPlayer();
+        }
     }
 
     @Override
@@ -134,6 +134,18 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             }
             zoomOutOnLandmarks(visibleLandmarks.stream()
                     .map(Marker::getPosition).collect(Collectors.toList()));
+        }
+    }
+
+    public void zoomOnPlayer(View view) {
+        zoomOnPlayer();
+    }
+
+    public void zoomOnPlayer() {
+        if(currentPositionMarker != null && currentPositionMarker.getPosition() != null) {
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(currentPositionMarker.getPosition().latitude,
+                    currentPositionMarker.getPosition().longitude), 15f);
+            mMap.animateCamera(cu);
         }
     }
 
