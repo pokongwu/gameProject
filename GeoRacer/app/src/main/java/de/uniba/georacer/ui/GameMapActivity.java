@@ -40,7 +40,13 @@ import de.uniba.georacer.ui.dialogs.GuessDistanceDialog;
 import de.uniba.georacer.R;
 
 
-public class GameMapActivity extends AppCompatActivity implements GameServiceListener, DialogGameServiceProxy, OnMapReadyCallback {
+/**
+ * Activity for the Map-Screen.
+ *
+ * @author Christos, Ludwig, Pio
+ */
+public class GameMapActivity extends AppCompatActivity
+        implements GameServiceListener, DialogGameServiceProxy, OnMapReadyCallback {
     protected GameService gameService;
     protected boolean gameServiceBound;
     private boolean isInitialZoomPerformed = false;
@@ -86,8 +92,10 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_2));
 
         currentPositionMarker= mMap.addMarker(markerOptions);
-        LatLng toLocation = new LatLng(location.getLatitude(), location.getLongitude()); // Whatever destination coordinates
-        MarkerAnimation.animateMarkerToICS(currentPositionMarker, toLocation, new LatLngInterpolar.Linear());
+        LatLng toLocation = new LatLng(location.getLatitude(),
+                location.getLongitude()); // Whatever destination coordinates
+        MarkerAnimation.animateMarkerToICS(currentPositionMarker,
+                toLocation, new LatLngInterpolar.Linear());
 
         if(!isInitialZoomPerformed) {
             isInitialZoomPerformed = true;
@@ -104,7 +112,8 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("OK", view1 -> {}).
-                setActionTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark))
+                setActionTextColor(ContextCompat.getColor(this,
+                        android.R.color.holo_green_dark))
                 .show();
     }
 
@@ -149,7 +158,8 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
 
     public void zoomOnPlayer() {
         if(currentPositionMarker != null && currentPositionMarker.getPosition() != null) {
-            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(currentPositionMarker.getPosition().latitude,
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(currentPositionMarker.getPosition().latitude,
                     currentPositionMarker.getPosition().longitude), 15f);
             mMap.animateCamera(cu);
         }
@@ -245,13 +255,15 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
             mMap.addMarker(destinationPosMarker);
             Intent intent = getIntent();
 
-            gameService.startRoutingToDestination(destination, intent.getIntExtra("rounds", 3));
+            gameService.startRoutingToDestination(destination,
+                    intent.getIntExtra("rounds", 3));
             mMap.setOnMapClickListener(null);
         });
 
         mMap.setOnMarkerClickListener(marker -> {
             if (isLandmark(marker)) {
-                new GuessDistanceDialog().showDialog(context, marker, this);
+                new GuessDistanceDialog().showDialog(context, marker,
+                        this);
             }
 
             return false;

@@ -19,6 +19,9 @@ import de.uniba.georacer.service.positioning.WGS84;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Christos
+ */
 public class positioningHelperTests {
     Map<GeoLocation, Double> guessesSimple = new HashMap<>();
     Map<GeoLocation, Double> closeToColinear1 = new HashMap<>();

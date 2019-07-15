@@ -1,10 +1,5 @@
 package de.uniba.georacer.animations;
 
-/* Copyright 2013 Google Inc.
-   Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
-   source: https://gist.github.com/broady/6314689
-   */
-
 import com.google.android.gms.maps.model.LatLng;
 
 import static java.lang.Math.asin;
@@ -16,6 +11,12 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
+/**
+ * @author Google
+ *    Copyright 2013 Google Inc.
+ *    Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
+ *    source: https://gist.github.com/broady/6314689
+ */
 public interface LatLngInterpolar {
     public LatLng interpolate(float fraction, LatLng a, LatLng b);
 
@@ -76,7 +77,10 @@ public interface LatLngInterpolar {
             return new LatLng(toDegrees(lat), toDegrees(lng));
         }
 
-        private double computeAngleBetween(double fromLat, double fromLng, double toLat, double toLng) {
+        private double computeAngleBetween(double fromLat,
+                                           double fromLng,
+                                           double toLat,
+                                           double toLng) {
             // Haversine's formula
             double dLat = fromLat - toLat;
             double dLng = fromLng - toLng;

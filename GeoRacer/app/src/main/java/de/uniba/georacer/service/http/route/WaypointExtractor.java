@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/*
- * Testing: start: 49.9064  10.895510
- *          second: 49.903258 10.892
+/**
+ * Extracts the waypoints from the RouteResponse
+ *
+ * Known issues: a little bit much redundancy in this class
+ *
+ * @author Ludwig
  */
-
-//TODO error handling eg. to few points
 public class WaypointExtractor {
     public List<LatLng> getWaypoints(PolylineOptions route, int rounds) {
         List<Location> routeLocations = route.getPoints().stream().map(this::mapLatLngToLocation)
@@ -55,7 +56,7 @@ public class WaypointExtractor {
         return waypoints;
     }
 
-    //TODO distance can also be extracted from the json response
+    // distance can also be extracted from the json response, this approach was faster to implement..
     private double getTotalDistanceFromRoute(List<Location> routeLocations) {
         double distance = 0;
         Location lastPoint = new Location("");

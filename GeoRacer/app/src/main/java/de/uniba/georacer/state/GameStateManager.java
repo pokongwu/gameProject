@@ -9,6 +9,11 @@ import java.util.List;
 import de.uniba.georacer.model.app.GameState;
 import de.uniba.georacer.model.json.Landmark;
 
+/**
+ * Manages the GameState, Proxy, Facette
+ *
+ * @author Ludwig
+ */
 public class GameStateManager {
     private static GameState gameState;
     private final GameStateListener gameStateListener;

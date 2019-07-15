@@ -1,9 +1,5 @@
 package de.uniba.georacer.service.http.route;
 
-/* Ludwig Leuschner
- * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
- */
-
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -16,6 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * AsynTask for the RouteParsing.
+ *
+ * Known issues: would be cleaner with GSON.
+ *
+ * @author Ludwig
+ * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
+ */
 public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
     final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
     private final int rounds;

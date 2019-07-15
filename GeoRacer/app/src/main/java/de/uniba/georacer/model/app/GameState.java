@@ -10,6 +10,11 @@ import java.util.List;
 
 import de.uniba.georacer.model.json.Landmark;
 
+/**
+ * Holds the state of the whole game
+ *
+ * @author Christos, Ludwig
+ */
 public class GameState {
     private static int roundCounter = 0;
 
@@ -64,9 +69,6 @@ public class GameState {
     }
 
     public void setWaypoints(List<LatLng> waypoints) {
-        for (int i = 0; i < roundStates.size(); i++) {
-            roundStates.get(i).setWaypoint(waypoints.get(i));
-        }
         this.waypoints = waypoints;
     }
 

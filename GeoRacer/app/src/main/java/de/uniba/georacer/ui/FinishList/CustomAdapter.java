@@ -16,10 +16,12 @@ import de.uniba.georacer.R;
 import de.uniba.georacer.model.app.Result;
 
 /**
+ * Provides the ListView with the data from the Result model.
+ *
  * initial source: https://www.journaldev.com/10416/android-listview-with-custom-adapter-example-tutorial
- * @author Ludwig Leuschner
+ *
+ * @author Ludwig
  */
-
 public class CustomAdapter extends ArrayAdapter<Result>{
 
     Context mContext;
@@ -94,7 +96,9 @@ public class CustomAdapter extends ArrayAdapter<Result>{
             view=convertView;
         }
 
-        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+        Animation animation = AnimationUtils.
+                loadAnimation(mContext, (position > lastPosition)
+                        ? R.anim.up_from_bottom : R.anim.down_from_top);
         view.startAnimation(animation);
         lastPosition = position;
 

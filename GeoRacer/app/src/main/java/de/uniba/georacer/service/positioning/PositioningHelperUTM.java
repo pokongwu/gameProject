@@ -9,15 +9,27 @@ import java.util.logging.Logger;
 import de.uniba.georacer.model.json.GeoLocation;
 
 
+/**
+ * Util class for the position calculation.
+ *
+ * @author Christos
+ */
 public class PositioningHelperUTM extends PositioningHelper implements PositioningHelperI {
     public static final double THRESHOLD = 0.01;
     private static final int MAXTRIES = 100;
     public static final Logger LOGGER = Logger.getLogger("PositioningHelperUTM");
 
-    public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) throws DegradedMatrixException {
-        LOGGER.info("Starting calculation from " + guesses.keySet().size() + " guesses and starting position: " + startingPosition.getLatitude() + " " + startingPosition.getLongitude());
+    public GeoLocation calculatePositionFromGuesses(Map<GeoLocation, Double> guesses,
+                                                    GeoLocation startingPosition)
+            throws DegradedMatrixException {
+        LOGGER.info("Starting calculation from "
+                + guesses.keySet().size()
+                + " guesses and starting position: "
+                + startingPosition.getLatitude() + " "
+                + startingPosition.getLongitude());
 
-        GeoLocation utmResult = GeoLocation.fromWGS84(startingPosition.getLatitude(), startingPosition.getLongitude());
+        GeoLocation utmResult = GeoLocation.fromWGS84(startingPosition.getLatitude(),
+                startingPosition.getLongitude());
 
         double vectorLength = 100;
         int counter = 0;
@@ -32,14 +44,21 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
                 double[][] designMatrixArray = calculateDesignMatrix(guesses, utmResult);
 
                 // 3. Correction Vector
-                SimpleMatrix correctionVector = calculateCorrectionVector(residuals, designMatrixArray);
-                vectorLength = Math.sqrt(Math.pow(correctionVector.get(0, 0), 2) + Math.pow(correctionVector.get(1, 0), 2));
+                SimpleMatrix correctionVector
+                        = calculateCorrectionVector(residuals, designMatrixArray);
+                vectorLength = Math.sqrt(Math.pow(correctionVector.get(0, 0), 2)
+                        + Math.pow(correctionVector.get(1, 0), 2));
 
                 // 4. Repeat until sufficient precision reached
-                UTM utm = new UTM(32, 'U', utmResult.getEastling() + correctionVector.get(0, 0), utmResult.getNorthling() + correctionVector.get(1, 0));
+                UTM utm = new UTM(32, 'U', utmResult.getEastling()
+                        + correctionVector.get(0, 0), utmResult.getNorthling()
+                        + correctionVector.get(1, 0));
                 utmResult = GeoLocation.fromUTM(utm.getEasting(), utm.getNorthing());
 
-                LOGGER.info("lat " + utmResult.getLatitude() + " long " + utmResult.getLongitude() + " vector length: " + vectorLength + " iterations: " + counter);
+                LOGGER.info("lat " + utmResult.getLatitude()
+                        + " long " + utmResult.getLongitude()
+                        + " vector length: " + vectorLength
+                        + " iterations: " + counter);
 
             }
         } catch (SingularMatrixException e) {
@@ -51,7 +70,8 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
     }
 
 
-    public double[][] calculateDesignMatrix(Map<GeoLocation, Double> guesses, GeoLocation startingPosition) {
+    public double[][] calculateDesignMatrix(Map<GeoLocation, Double> guesses,
+                                            GeoLocation startingPosition) {
         // Derivative for x:  x - x^i / sqrt((x^i - x)^2 + (y^i - y)^2)
         // 2-Dimensional (x and y values)
         double[][] designMatrix = new double[guesses.keySet().size()][2];
@@ -60,10 +80,14 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
         for (GeoLocation location : guesses.keySet()) {
 
             double xNumerator = startingPosition.getEastling() - location.getEastling();
-            double xDivisor = Math.sqrt(Math.pow(location.getEastling() - startingPosition.getEastling(), 2) + Math.pow(location.getNorthling() - startingPosition.getNorthling(), 2));
+            double xDivisor = Math.sqrt(Math.pow(location.getEastling()
+                    - startingPosition.getEastling(), 2) + Math.pow(location.getNorthling()
+                    - startingPosition.getNorthling(), 2));
 
             double yNumerator = startingPosition.getNorthling() - location.getNorthling();
-            double yDivisor = Math.sqrt(Math.pow(location.getEastling() - startingPosition.getEastling(), 2) + Math.pow(location.getNorthling() - startingPosition.getNorthling(), 2));
+            double yDivisor = Math.sqrt(Math.pow(location.getEastling()
+                    - startingPosition.getEastling(), 2) + Math.pow(location.getNorthling()
+                    - startingPosition.getNorthling(), 2));
 
 
             designMatrix[i][0] = xNumerator / xDivisor;
@@ -90,8 +114,10 @@ public class PositioningHelperUTM extends PositioningHelper implements Positioni
         for (GeoLocation location : guesses.keySet()) {
             Double guess = guesses.get(location);
 
-            double firstSummand = Math.pow(location.getNorthling() - startingPosition.getNorthling(), 2);
-            double secondSummand = Math.pow(location.getEastling() - startingPosition.getEastling(), 2);
+            double firstSummand = Math.pow(location.getNorthling()
+                    - startingPosition.getNorthling(), 2);
+            double secondSummand = Math.pow(location.getEastling()
+                    - startingPosition.getEastling(), 2);
             double sqrt = Math.sqrt(firstSummand + secondSummand);
 
 

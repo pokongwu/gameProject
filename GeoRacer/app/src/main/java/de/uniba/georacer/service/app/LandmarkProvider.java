@@ -16,6 +16,16 @@ import java.util.stream.Collectors;
 import de.uniba.georacer.model.json.Landmark;
 import de.uniba.georacer.parsing.LandmarkParser;
 
+/**
+ * Retrieves initial the landmarks from the LandmarkParser.
+ * After that provides the requested landmarks. The provided landmarks get removed from the list.
+ *
+ * Support for multi-player: If the game is played on two different phones, the action for the route
+ * should be triggered at the same MINUTE eg. player1 at 14:23:08 and player2 at 14:23:18. If they
+ * do so, both player will receive the SAME landmarks, in order to compare results at the end!
+ *
+ * @author Ludwig, Pio
+ */
 public class LandmarkProvider {
     final List<Landmark> landmarks;
 
@@ -36,7 +46,6 @@ public class LandmarkProvider {
                 .collect(Collectors.toList());
     }
 
-    //TODO check if landmark was already selected / remove from list
     private List<Landmark> getRandomLandmarks(int numberOfLandmarks) {
         Random seed = getSeed();
         Collections.shuffle(landmarks, seed);

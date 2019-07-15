@@ -11,6 +11,12 @@ import com.google.android.gms.maps.model.Marker;
 import de.uniba.georacer.R;
 import de.uniba.georacer.service.app.DialogGameServiceProxy;
 
+/**
+ * Custom ClickListener in order to catch a wrong formatted input. If an NumberFormatException is
+ * thrown, the alert dialog won't disappear.
+ *
+ * @author Ludwig
+ */
 public class ValidatorClickListener implements View.OnClickListener {
     private final Dialog parentDialog;
     private final DialogGameServiceProxy dialogGameServiceProxy;

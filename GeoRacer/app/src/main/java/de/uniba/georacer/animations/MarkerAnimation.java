@@ -1,10 +1,5 @@
 package de.uniba.georacer.animations;
 
-/* Copyright 2013 Google Inc.
-   Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
-   source: https://gist.github.com/broady/6314689
-   */
-
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
@@ -19,6 +14,12 @@ import android.view.animation.Interpolator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * @author Google
+ *    Copyright 2013 Google Inc.
+ *    Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0.html
+ *    source: https://gist.github.com/broady/6314689
+ */
 public class MarkerAnimation {
     static void animateMarkerToGB(final Marker marker, final LatLng finalPosition, final LatLngInterpolar latLngInterpolator) {
         final LatLng startPosition = marker.getPosition();

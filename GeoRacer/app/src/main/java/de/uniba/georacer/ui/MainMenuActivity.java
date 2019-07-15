@@ -11,6 +11,10 @@ import android.widget.NumberPicker;
 
 import de.uniba.georacer.R;
 
+/**
+ * Activity for the MainMenu-Screen.
+ * @author Christos, Pio
+ */
 public class MainMenuActivity extends AppCompatActivity {
 
     private int rounds = 1;

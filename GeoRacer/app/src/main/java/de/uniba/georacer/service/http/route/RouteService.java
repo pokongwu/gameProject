@@ -1,9 +1,5 @@
 package de.uniba.georacer.service.http.route;
 
-/* Ludwig Leuschner
- * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
- */
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,6 +10,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * AsyncTask for the RouteService
+ *
+ * @author Ludwig
+ * initial source: https://www.journaldev.com/13373/android-google-map-drawing-route-two-points
+ */
 public class RouteService extends AsyncTask {
     private final OnRouteServiceFinishedListener onRouteServiceFinishedListener;
     private final int rounds;

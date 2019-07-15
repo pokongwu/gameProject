@@ -3,6 +3,9 @@ package de.uniba.georacer.model.json;
 import de.uniba.georacer.service.positioning.UTM;
 import de.uniba.georacer.service.positioning.WGS84;
 
+/**
+ * @author Christos
+ */
 public class GeoLocation {
 
     private double longitude;

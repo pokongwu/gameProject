@@ -9,9 +9,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.List;
 
 /**
- * Created by lleuschner on 21.05.19.
+ * Callback functions triggered by the GameService
+ *
+ * @author Christos, Ludwig, Pio
  */
-
 public interface GameServiceListener {
     void updatePlayerPosition(Location location);
 

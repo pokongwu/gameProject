@@ -6,8 +6,14 @@ import java.util.Map;
 
 import de.uniba.georacer.model.json.GeoLocation;
 
+/**
+ * Util functions for the matrix calculations.
+ *
+ * @author Christos
+ */
 public abstract class PositioningHelper {
-    protected SimpleMatrix calculateCorrectionVector(double[][] residuals, double[][] designMatrixArray) {
+    protected SimpleMatrix calculateCorrectionVector(double[][] residuals,
+                                                     double[][] designMatrixArray) {
         SimpleMatrix designMatrix = new SimpleMatrix(designMatrixArray);
         SimpleMatrix residualsVector = new SimpleMatrix(residuals);
         SimpleMatrix designMatrixTransposed = designMatrix.transpose();
@@ -35,8 +41,10 @@ public abstract class PositioningHelper {
         int i = 0;
         for (GeoLocation location : guesses.keySet()) {
             Double guess = guesses.get(location);
-            double firstSummand = Math.pow(location.getLongitude() - startingPosition.getLongitude(), 2);
-            double secondSummand = Math.pow(location.getLatitude() - startingPosition.getLatitude(), 2);
+            double firstSummand = Math.pow(location.getLongitude()
+                    - startingPosition.getLongitude(), 2);
+            double secondSummand = Math.pow(location.getLatitude()
+                    - startingPosition.getLatitude(), 2);
             double sqrt = Math.sqrt(firstSummand + secondSummand);
             result[i][0] = guess - sqrt;
             i++;
@@ -56,7 +64,8 @@ public abstract class PositioningHelper {
         double sindLat = Math.sin(dLat / 2);
         double sindLng = Math.sin(dLng / 2);
         double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(location1.getLatitude())) * Math.cos(Math.toRadians(location2.getLatitude()));
+                * Math.cos(Math.toRadians(location1.getLatitude()))
+                * Math.cos(Math.toRadians(location2.getLatitude()));
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
 

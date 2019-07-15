@@ -1,5 +1,10 @@
 package de.uniba.georacer.model.app;
 
+/**
+ * Holds the information for the FinishActivity ListView
+ *
+ * @author Ludwig
+ */
 public class Result {
     private String round = "";
     private String landmarkName1 = "";
@@ -20,8 +25,6 @@ public class Result {
     private String differenceDistanceLandmark4 = "";
     private String avgGuessingError = "";
     private String waypointGuessingError = "";
-
-
 
     public String getRound() {
         return round;

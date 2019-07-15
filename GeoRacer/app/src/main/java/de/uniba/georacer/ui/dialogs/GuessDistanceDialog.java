@@ -13,6 +13,11 @@ import com.google.android.gms.maps.model.Marker;
 import de.uniba.georacer.R;
 import de.uniba.georacer.service.app.DialogGameServiceProxy;
 
+/**
+ * Shows an input dialog for the user to enter his guess for the provided landmark.
+ *
+ * @author Ludwig
+ */
 public class GuessDistanceDialog {
     public void showDialog(Context context, Marker marker, DialogGameServiceProxy dialogGameServiceProxy) {
         View mView = View.inflate(context,R.layout.guess_input_dialog,null);

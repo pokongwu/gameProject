@@ -13,6 +13,12 @@ import java.util.List;
 
 import de.uniba.georacer.model.json.Landmark;
 
+/**
+ * Reads and parses the file content of the landmark.json file
+ * author auf landmarks.json is also Pio
+ *
+ * @author Pio
+ */
 public class LandmarkParser {
     private List<Landmark> landmarks;
 
@@ -30,10 +36,6 @@ public class LandmarkParser {
         Type listType = new TypeToken<List<Landmark>>() {
         }.getType();
         List<Landmark> landmarks = new Gson().fromJson(fileContent, listType);
-
-        for (Landmark landmark : landmarks) {
-            System.out.println("landmarks> " + landmark.getName() + " latitude " + landmark.getPosition().getLatitude());
-        }
 
         return landmarks;
     }

@@ -4,6 +4,9 @@ import java.util.Map;
 
 import de.uniba.georacer.model.json.GeoLocation;
 
+/**
+ * @author Christos
+ */
 public interface PositioningHelperI {
 
     /**

@@ -1,13 +1,5 @@
 package de.uniba.georacer.service.http.route;
 
-/* Ludwig Leuschner
- * initial source: https://github.com/bashantad/Tourfit-android/blob/master/src/com/example/tourfit/DirectionsJSONParser.java
- */
-
-/*
- * Useful to track user
- *
- */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Parses the response from the route service.
+ *
+ * Known issues: would be cleaner with GSON
+ *
+ * @author Ludwig
+ * initial source: https://github.com/bashantad/Tourfit-android/blob/master/src/com/example/tourfit/DirectionsJSONParser.java
+ */
 public class DirectionsJSONParser {
 
     /**

@@ -11,9 +11,10 @@ import java.util.stream.Collectors;
 import de.uniba.georacer.R;
 
 /**
- * @author Ludwig Leuschner
+ * Generates the options for the waypoints, including the correct stroke color.
+ *
+ * @author Ludwig
  */
-
 public class WaypointsOptionGenerator {
     private static final int WAYPOINT_RADIUS = 50;
 
@@ -42,6 +43,5 @@ public class WaypointsOptionGenerator {
 
         return new CircleOptions()
                 .center(waypoint).radius(WAYPOINT_RADIUS).strokeColor(strokeColor);
-
     }
 }

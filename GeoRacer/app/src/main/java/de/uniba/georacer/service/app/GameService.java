@@ -27,21 +27,23 @@ import de.uniba.georacer.state.GameStateListener;
 import de.uniba.georacer.state.GameStateManager;
 import de.uniba.georacer.ui.GameFinishActivity;
 
-public class GameService extends Service implements OnRouteServiceFinishedListener, GameStateListener, LocationListener {
+/**
+ * Running Service for the app
+ *
+ * @author Christos, Ludwig, Pio
+ */
+public class GameService extends Service
+        implements OnRouteServiceFinishedListener, GameStateListener, LocationListener {
     private GameStateManager gameStateManager;
     private LandmarkProvider landmarkProvider;
     private final IBinder binder = new LocalBinder();
     private final List<GameServiceListener> listeners = new ArrayList<GameServiceListener>();
     private Location lastKnownLocation;
 
-
-    // ===== Service Methods =====
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return Service.START_NOT_STICKY;
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,17 +73,20 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     private void initLocationServices() throws SecurityException {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager =
+                (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = this;
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000,
+                5,
+                locationListener);
     }
 
     @Override
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
 
-        // Alert Listeners about changed player position
         for (GameServiceListener listener : listeners) {
             listener.updatePlayerPosition(location);
             if (gameStateManager.getDestination() == null) {
@@ -119,7 +124,6 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     }
 
     public void startRoutingToDestination(Location destination, int rounds) {
-
         if (!gameStateManager.isStartPositionSet()) {
             gameStateManager.setStart(lastKnownLocation);
         }
@@ -129,7 +133,8 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
         if (gameStateManager.isStartPositionSet()) {
             RouteService routeService = new RouteService(this,rounds);
-            String routeUrl = RouteURLs.getRouteUrl(gameStateManager.getStartPosition(), gameStateManager.getDestination(), getApplicationContext());
+            String routeUrl = RouteURLs.getRouteUrl(gameStateManager.getStartPosition(),
+                    gameStateManager.getDestination(), getApplicationContext());
             routeService.execute(routeUrl);
         } else {
             Log.w("##", "no start position available");
@@ -146,8 +151,9 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
 
         gameStateManager.setWaypoints(waypoints);
         List<CircleOptions> waypointOptions =
-                new WaypointsOptionGenerator(this, waypoints, gameStateManager.getCurrentRound())
-                        .getWaypointOptions();
+                new WaypointsOptionGenerator(this,
+                        waypoints,
+                        gameStateManager.getCurrentRound()).getWaypointOptions();
 
         for (GameServiceListener listener : listeners) {
             listener.drawRoute(routeOptions);
@@ -163,8 +169,9 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     @Override
     public void triggertNextRound(int currentRound) {
         List<CircleOptions> waypointOptions =
-                new WaypointsOptionGenerator(this, gameStateManager.getWaypoints(), gameStateManager.getCurrentRound())
-                        .getWaypointOptions();
+                new WaypointsOptionGenerator(this,
+                        gameStateManager.getWaypoints(),
+                        gameStateManager.getCurrentRound()).getWaypointOptions();
 
         for (GameServiceListener listener : listeners) {
             listener.showToast("Please walk to the next waypoint.");

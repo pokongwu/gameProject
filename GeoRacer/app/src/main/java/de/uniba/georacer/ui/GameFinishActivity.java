@@ -28,6 +28,13 @@ import de.uniba.georacer.service.positioning.PositioningHelperUTM;
 import de.uniba.georacer.state.GameStateManager;
 import de.uniba.georacer.ui.FinishList.CustomAdapter;
 
+/**
+ * Activity for the Finish-Screen.
+ *
+ * Known issues: the switch-case is not the yellow from the egg :-)
+ *
+ * @author Christos, Ludwig
+ */
 public class GameFinishActivity extends AppCompatActivity {
     private Logger LOGGER = Logger.getLogger("GameFinishActivity");
     ListView listView;
@@ -51,7 +58,6 @@ public class GameFinishActivity extends AppCompatActivity {
 
         PositioningHelperI positioningHelper = new PositioningHelperUTM();
 
-        //TODO add to model
         int finalScore = 0;
 
         int i = 0;
