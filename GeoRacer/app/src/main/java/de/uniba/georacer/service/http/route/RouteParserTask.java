@@ -34,7 +34,6 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
 
         try {
             jObject = new JSONObject(jsonData[0]);
-            //TODO maybe switch to gson?
             DirectionsJSONParser parser = new DirectionsJSONParser();
 
             routes = parser.parse(jObject);

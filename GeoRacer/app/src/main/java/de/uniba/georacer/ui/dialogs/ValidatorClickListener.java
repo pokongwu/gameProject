@@ -1,6 +1,8 @@
 package de.uniba.georacer.ui.dialogs;
 
 import android.app.Dialog;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,7 +26,6 @@ public class ValidatorClickListener implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         final EditText userInput = parentDialog.findViewById(R.id.userInputDialog);
-
         try {
             double guess = parseInput(userInput.getText().toString());
             //TODO use different landmarkId
@@ -35,7 +36,6 @@ public class ValidatorClickListener implements View.OnClickListener {
             gameService.saveGuess(marker.getTitle(), guess);
             parentDialog.dismiss();
         } catch (NumberFormatException numberFormatException) {
-            //TODO snackbar is in background and not sufficient for a warning
             gameService.showSnackbar("Please enter a valid number.");
         }
     }

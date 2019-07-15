@@ -36,7 +36,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="de.uniba.georacer.ui.GameMapActivity">
+        <activity android:name="de.uniba.georacer.ui.GameMapActivity"  android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

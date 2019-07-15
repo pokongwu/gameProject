@@ -5,6 +5,7 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.uniba.georacer.model.json.Landmark;
@@ -54,9 +55,8 @@ public class GameState {
         this.destination = destination;
     }
 
-    // TODO defensive copy
     public List<RoundState> getRoundStates() {
-        return roundStates;
+        return Collections.unmodifiableList(this.roundStates);
     }
 
     private RoundState getCurrentRoundState() {
