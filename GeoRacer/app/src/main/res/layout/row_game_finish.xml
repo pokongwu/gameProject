@@ -20,7 +20,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp"
-                android:text="Guesses for round "/>
+                android:text="@string/guesses_for_round"/>
             <TextView
                 android:id="@+id/fow_finish_round_number"
                 android:layout_width="wrap_content"
@@ -41,17 +41,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="guessed"/>
+                android:text="@string/guessed_label"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="actual"/>
+                android:text="@string/actual_label"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="difference"/>
+                android:text="@string/difference_label"/>
         </LinearLayout>
 
         <LinearLayout
@@ -177,7 +177,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Average guessing error: "/>
+                android:text="@string/avg_guessing_error_label"/>
             <TextView
                 android:id="@+id/row_finish_avg_error"
                 android:layout_width="wrap_content"
@@ -192,7 +192,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guessing error for waypoint(circular lateration): "/>
+                android:text="@string/guessing_error_lateration_label"/>
             <TextView
                 android:id="@+id/row_finish_circular_lateration_error"
                 android:layout_width="wrap_content"

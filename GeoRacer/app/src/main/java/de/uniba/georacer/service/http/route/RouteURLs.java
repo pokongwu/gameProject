@@ -14,7 +14,8 @@ public class RouteURLs {
         String fullShape = "true";
         String directionsUrl = context.getString(R.string.mapquest_api_route_uri) +
                 "key=%s&from=%s,%s&to=%s,%s&routeType=%s&fullShape=%s";
-        String uri = String.format(directionsUrl,
+
+        return String.format(directionsUrl,
                 context.getString(R.string.mapquest_api_key),
                 start.getLatitude(),
                 start.getLongitude(),
@@ -22,7 +23,5 @@ public class RouteURLs {
                 destination.getLongitude(),
                 "pedestrian",
                 fullShape);
-
-        return uri;
     }
 }

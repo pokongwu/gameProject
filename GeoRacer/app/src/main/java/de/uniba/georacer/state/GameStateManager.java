@@ -14,7 +14,7 @@ public class GameStateManager {
     private final GameStateListener gameStateListener;
 
     public GameStateManager(GameStateListener gameStateListener) {
-        this.gameState = new GameState();
+        gameState = new GameState();
         this.gameStateListener = gameStateListener;
     }
 

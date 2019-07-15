@@ -10,6 +10,6 @@
         android:id="@+id/userInputDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Something"
+        android:hint="@string/guessing_alert_hint"
         android:inputType="text" />
 </LinearLayout>

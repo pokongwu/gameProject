@@ -2,7 +2,6 @@ package de.uniba.georacer.service.positioning;
 
 import org.ejml.simple.SimpleMatrix;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.Logger;
 

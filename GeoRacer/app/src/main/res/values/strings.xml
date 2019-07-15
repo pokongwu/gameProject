@@ -4,15 +4,19 @@
     <string name="title_activity_game_finish">Finish</string>
     <string name="button">Start Game</string>
     <string name="backButton">Menu</string>
-    <string name="title_activity_maps">Map</string>
 
     <string name="my_position_title">You are here</string>
     <string name="my_destination_title">Your destination</string>
     
     <string name="select_rounds">Choose number of rounds:</string>
-    <string name="default_rounds">2</string>
 
 
     <string name="finish_header">Congratulations you have finished the game! Your total deviation is:</string>
-    <string name="finish_hint">Try and reach 0!</string>
+    <string name="guessing_alert_hint">Your guess in meters</string>
+    <string name="guesses_for_round">Guesses for round</string>
+    <string name="guessed_label">guessed</string>
+    <string name="actual_label">actual</string>
+    <string name="difference_label">difference</string>
+    <string name="avg_guessing_error_label">Average guessing error: </string>
+    <string name="guessing_error_lateration_label">Guessing error for waypoint(circular lateration): </string>
 </resources>

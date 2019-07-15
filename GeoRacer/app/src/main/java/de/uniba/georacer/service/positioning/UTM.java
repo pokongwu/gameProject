@@ -33,6 +33,7 @@ public class UTM
         return letter;
     }
 
+    @Override
     public String toString() {
         return String.format("%s %c %s %s", zone, letter, easting, northing);
     }

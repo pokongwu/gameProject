@@ -55,7 +55,7 @@ public class RouteParserTask  extends AsyncTask<String, Integer, List<List<HashM
 
             for (int j = 0; j < path.size(); j++) {
                 HashMap<String, String> point = path.get(j);
-
+                
                 double lat = Double.parseDouble(point.get("lat"));
                 double lng = Double.parseDouble(point.get("lng"));
                 LatLng position = new LatLng(lat, lng);

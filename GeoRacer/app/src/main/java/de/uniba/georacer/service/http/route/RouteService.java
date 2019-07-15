@@ -57,7 +57,7 @@ public class RouteService extends AsyncTask {
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
             StringBuffer sb = new StringBuffer();
 
-            String line = "";
+            String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }

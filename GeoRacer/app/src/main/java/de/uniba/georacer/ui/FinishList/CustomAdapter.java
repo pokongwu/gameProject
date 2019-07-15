@@ -22,7 +22,6 @@ import de.uniba.georacer.model.app.Result;
 
 public class CustomAdapter extends ArrayAdapter<Result>{
 
-    private List<Result> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -50,7 +49,7 @@ public class CustomAdapter extends ArrayAdapter<Result>{
 
     public CustomAdapter(List<Result> data, Context context) {
         super(context, R.layout.row_game_finish, data);
-        this.dataSet = data;
+        List<Result> dataSet = data;
         this.mContext=context;
 
     }

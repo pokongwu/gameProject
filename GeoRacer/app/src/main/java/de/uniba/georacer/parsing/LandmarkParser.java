@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import de.uniba.georacer.model.json.Landmark;
@@ -38,7 +39,7 @@ public class LandmarkParser {
     }
 
     private String loadJSONFromAsset(Context context) {
-        String json = null;
+        String json;
 
         try {
             InputStream is = context.getAssets().open("Landmarks.json");
@@ -47,7 +48,7 @@ public class LandmarkParser {
 
             is.read(buffer);
             is.close();
-            json = new String(buffer, "UTF-8");
+            json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;

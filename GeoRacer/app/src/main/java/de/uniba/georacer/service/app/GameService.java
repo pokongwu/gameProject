@@ -200,10 +200,4 @@ public class GameService extends Service implements OnRouteServiceFinishedListen
     public void saveGuess(String landmarkId, Double guess) {
         gameStateManager.saveGuess(landmarkId, guess);
     }
-
-    public void showSnackbar(String message) {
-        for (GameServiceListener listener : listeners) {
-            listener.showToast(message);
-        }
-    }
 }

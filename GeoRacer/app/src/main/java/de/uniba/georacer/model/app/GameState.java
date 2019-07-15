@@ -101,7 +101,7 @@ public class GameState {
     public void startNewRound() {
         roundCounter++;
         currentRound = roundCounter;
-        roundStates.add(new RoundState(roundCounter));
+        roundStates.add(new RoundState());
     }
 
     public void setNumberOfRounds(int rounds) {

@@ -29,6 +29,7 @@ public class WGS84 {
         fromUTM(utm.getZone(), utm.getLetter(), utm.getEasting(), utm.getNorthing());
     }
 
+    @Override
     public String toString() {
         char ns = (latitude < 0) ? 'S' : 'N';
         char ew = (longitude < 0) ? 'W' : 'E';

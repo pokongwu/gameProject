@@ -8,12 +8,10 @@ import java.util.Map;
 import de.uniba.georacer.model.json.GeoLocation;
 
 public class RoundState {
-    private final int round;
     private Map<String, Double> guesses;
     private GeoLocation waypoint;
 
-    public RoundState(int round) {
-        this.round = round;
+    public RoundState() {
         guesses = new HashMap<>();
     }
 

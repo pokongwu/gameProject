@@ -63,7 +63,7 @@
         <service
             android:name="de.uniba.georacer.service.app.GameService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

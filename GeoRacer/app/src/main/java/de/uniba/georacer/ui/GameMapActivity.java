@@ -8,8 +8,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -98,7 +98,7 @@ public class GameMapActivity extends AppCompatActivity implements GameServiceLis
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("OK", view1 -> {}).
-                setActionTextColor(getResources().getColor(android.R.color.holo_green_dark))
+                setActionTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark))
                 .show();
     }
 

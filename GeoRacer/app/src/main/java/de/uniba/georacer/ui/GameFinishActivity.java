@@ -29,7 +29,6 @@ import de.uniba.georacer.state.GameStateManager;
 import de.uniba.georacer.ui.FinishList.CustomAdapter;
 
 public class GameFinishActivity extends AppCompatActivity {
-    private GameState gameState;
     private Logger LOGGER = Logger.getLogger("GameFinishActivity");
     ListView listView;
 
@@ -46,7 +45,7 @@ public class GameFinishActivity extends AppCompatActivity {
     private List<Result> getResults() {
         List<Result> results = new ArrayList<>();
 
-        gameState = GameStateManager.getGameState();
+        GameState gameState = GameStateManager.getGameState();
         List<RoundState> roundStates = gameState.getRoundStates();
         List<Landmark> landmarks = gameState.getLandmarks();
 
@@ -109,7 +108,7 @@ public class GameFinishActivity extends AppCompatActivity {
             }
             // Calculate position
             GeoLocation waypoint = GeoLocation.fromWGS84(waypoints.get(i).latitude, waypoints.get(i).longitude);
-            GeoLocation calculatedPosition = null;
+            GeoLocation calculatedPosition;
             int positionDifference = 1000;
             try {
                 calculatedPosition = positioningHelper.calculatePositionFromGuesses(guessesAndLandmarks, waypoint);
@@ -134,7 +133,7 @@ public class GameFinishActivity extends AppCompatActivity {
         }
 
         TextView scoreView = findViewById(R.id.final_score);
-        scoreView.setText(Integer.toString(finalScore));
+        scoreView.setText(String.valueOf(finalScore));
 
         return results;
 

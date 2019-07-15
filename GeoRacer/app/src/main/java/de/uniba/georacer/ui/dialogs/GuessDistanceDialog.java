@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +15,7 @@ import de.uniba.georacer.service.app.DialogGameServiceProxy;
 
 public class GuessDistanceDialog {
     public void showDialog(Context context, Marker marker, DialogGameServiceProxy dialogGameServiceProxy) {
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
-        View mView = layoutInflaterAndroid.inflate(R.layout.guess_input_dialog, null);
+        View mView = View.inflate(context,R.layout.guess_input_dialog,null);
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
         alertDialogBuilderUserInput.setView(mView);
         final EditText userInput = mView.findViewById(R.id.userInputDialog);
