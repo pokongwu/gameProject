@@ -1,9 +1,11 @@
 package de.uniba.georacer.service.positioning;
 
 /**
- * Class representing WGS84-coordinates. Based on code from stack overflow.
+ * Class representing WGS84-coordinates. Based on code from stack overflow, for the source please see the following links.
+ * This has been verified with several tests and other sources, see below.
  *
  * @author Rolf Rander
+ * @see <a href="https://www.ibm.com/developerworks/library/j-coordconvert/index.html">IBM<a/>
  * @see <a href="https://github.com/rolfrander/geo">Source</a>
  * @see <a href="https://stackoverflow.com/questions/176137/java-convert-lat-lon-to-utm">Stack Overflow</a>
  * @see <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">Wikipedia-entry on WGS-84</a>

@@ -32,6 +32,7 @@ import de.uniba.georacer.ui.FinishList.CustomAdapter;
  * Activity for the Finish-Screen.
  *
  * Known issues: the switch-case is not the yellow from the egg :-)
+ * But good enough since we always prompt four landmarks and see no reason to change that.
  *
  * @author Christos, Ludwig
  */

@@ -3,7 +3,9 @@ package de.uniba.georacer.service.positioning;
 import java.util.Locale;
 
 /**
- * Class representing UTM-coordinates. Based on code from stack overflow.
+ * Class representing UTM-coordinates. Based on code from stack overflow, for the source please see the following links.
+ * This has been verified with several tests and other sources, see below.
+ * @see <a href="https://www.ibm.com/developerworks/library/j-coordconvert/index.html">IBM<a/>
  * @see <a href="https://stackoverflow.com/questions/176137/java-convert-lat-lon-to-utm">Stack Overflow</a>
  * @see <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system">Wikipedia-entry on UTM</a>
  * @author Rolf Rander
