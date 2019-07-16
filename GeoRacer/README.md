@@ -1,9 +1,3 @@
-# Discuss
-
-### How to handle "illegal" movement of player
-illegal movement: the player does walk past the next waypoint.
-solution: keep the players position up to date, so he knows where he is. Unlock the next round ony if he is near the next waypoint 
-
 ### Quickstart GUIDE
 1. Make sure you have activated GPS, mobile data and don't be inside a building
 ⋅⋅* If you are testing on a emulator, you can import the KML-file route-mahr-to-klosterbraeu.kml located in the root directory of the git project
